@@ -10,6 +10,11 @@
       "StackName": "amplify-dermiqreactwest1-dev-182827",
       "StackId": "arn:aws:cloudformation:us-west-1:609155361209:stack/amplify-dermiqreactwest1-dev-182827/1964e260-b4e0-11ee-a049-023819955d6b",
       "AmplifyAppId": "d1glm9c5d1uxmo"
+    },
+    "categories": {
+      "auth": {
+        "dermiqreactwest142b19813": {}
+      }
     }
   }
 }
