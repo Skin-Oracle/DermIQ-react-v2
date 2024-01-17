@@ -14,6 +14,12 @@
     "categories": {
       "auth": {
         "dermiqreactwest142b19813": {}
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d1glm9c5d1uxmo",
+          "type": "manual"
+        }
       }
     }
   }
