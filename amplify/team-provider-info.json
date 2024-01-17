@@ -1,0 +1,15 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-dermiqreactwest1-dev-182827-authRole",
+      "UnauthRoleArn": "arn:aws:iam::609155361209:role/amplify-dermiqreactwest1-dev-182827-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::609155361209:role/amplify-dermiqreactwest1-dev-182827-authRole",
+      "Region": "us-west-1",
+      "DeploymentBucketName": "amplify-dermiqreactwest1-dev-182827-deployment",
+      "UnauthRoleName": "amplify-dermiqreactwest1-dev-182827-unauthRole",
+      "StackName": "amplify-dermiqreactwest1-dev-182827",
+      "StackId": "arn:aws:cloudformation:us-west-1:609155361209:stack/amplify-dermiqreactwest1-dev-182827/1964e260-b4e0-11ee-a049-023819955d6b",
+      "AmplifyAppId": "d1glm9c5d1uxmo"
+    }
+  }
+}
