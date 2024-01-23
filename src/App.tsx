@@ -28,7 +28,7 @@ export function App({ signOut, user }: WithAuthenticatorProps) {
   return (
     <>
       <View>
-        <Heading>Hello {user?.username} </Heading>
+        <Heading>Welcome to our app </Heading>
         <Button onClick={signOut}>Sign out</Button>
         <input
           type="file"
