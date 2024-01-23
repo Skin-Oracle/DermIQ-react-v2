@@ -3,7 +3,7 @@ import { withAuthenticator, Button, Heading, View } from '@aws-amplify/ui-react'
 import '@aws-amplify/ui-react/styles.css';
 import { uploadData } from 'aws-amplify/storage';
 
-export function App({ signOut, user }: WithAuthenticatorProps) {
+export function App({ signOut }: WithAuthenticatorProps) {
   // Function to handle file selection and upload
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files) return;
