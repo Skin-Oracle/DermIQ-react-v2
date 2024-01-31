@@ -1,5 +1,7 @@
 # React + TypeScript + Vite
 
+Backend is fully hosted on AWS US-WEST-1
+
 ### one time setup 
 
 1.`npm install`
@@ -8,9 +10,9 @@
 
 3.`amplify configure`
 
-Message me to get the user ID access key and password to finish configuring
+4. Message me to get the user ID access key and password to finish configuring
 
-Then message me for the configuration file (amplifyconfiguration.json)
+5. Message me for the configuration file (amplifyconfiguration.json)
 
 ### to run frontend
 `npm run dev`
