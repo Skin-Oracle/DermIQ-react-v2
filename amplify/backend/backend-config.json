@@ -1,6 +1,6 @@
 {
   "auth": {
-    "dermiqreactwest142b19813": {
+    "DermIQreactwest1": {
       "customAuth": false,
       "dependsOn": [],
       "frontendAuthConfig": {
@@ -9,12 +9,15 @@
           "SMS"
         ],
         "passwordProtectionSettings": {
-          "passwordPolicyCharacters": [],
+          "passwordPolicyCharacters": [
+            "REQUIRES_LOWERCASE",
+            "REQUIRES_NUMBERS",
+            "REQUIRES_SYMBOLS",
+            "REQUIRES_UPPERCASE"
+          ],
           "passwordPolicyMinLength": 8
         },
-        "signupAttributes": [
-          "EMAIL"
-        ],
+        "signupAttributes": [],
         "socialProviders": [],
         "usernameAttributes": [
           "EMAIL"
@@ -50,13 +53,46 @@
           "resourceName": "amplifyhosting"
         }
       ]
+    },
+    "AMPLIFY_storage_dermiqreactwest17ccf738f_bucketName": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "dermiqreactwest17ccf738f"
+        }
+      ]
+    },
+    "AMPLIFY_storage_dermiqreactwest17ccf738f_region": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "dermiqreactwest17ccf738f"
+        }
+      ]
+    },
+    "AMPLIFY_storage_dermiqreactwest1a8565478_bucketName": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "dermiqreactwest1a8565478"
+        }
+      ]
+    },
+    "AMPLIFY_storage_dermiqreactwest1a8565478_region": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "dermiqreactwest1a8565478"
+        }
+      ]
     }
   },
   "storage": {
-    "skinImages": {
+    "dermiqreactwest17ccf738f": {
       "dependsOn": [],
       "providerPlugin": "awscloudformation",
-      "service": "S3"
+      "service": "S3",
+      "serviceType": "imported"
     }
   }
 }

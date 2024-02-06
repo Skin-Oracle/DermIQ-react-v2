@@ -13,7 +13,8 @@
     },
     "categories": {
       "auth": {
-        "dermiqreactwest142b19813": {}
+        "dermiqreactwest142b19813": {},
+        "DermIQreactwest1": {}
       },
       "hosting": {
         "amplifyhosting": {
@@ -22,7 +23,15 @@
         }
       },
       "storage": {
-        "skinImages": {}
+        "skinImages": {},
+        "dermiqreactwest1a8565478": {
+          "bucketName": "skinimages-dermiq-122323182827-dev",
+          "region": "us-west-1"
+        },
+        "dermiqreactwest17ccf738f": {
+          "bucketName": "skinimages-dermiq-122323182827-dev",
+          "region": "us-west-1"
+        }
       }
     }
   }
