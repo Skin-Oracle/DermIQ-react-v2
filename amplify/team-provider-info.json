@@ -29,6 +29,9 @@
           "region": "us-west-1"
         },
         "skinimages": {}
+      },
+      "api": {
+        "dermiqreactwest1": {}
       }
     }
   }

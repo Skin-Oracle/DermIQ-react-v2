@@ -1,0 +1,42 @@
+# This "input" configures a global authorization rule to enable public access to
+# all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
+input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONLY!
+
+type User @model {
+  user_id: ID!
+  entries: [Entry] @hasMany
+}
+
+type Entry @model {
+  entry_id: ID!
+  body_part: String
+  entry_name: String
+  medications: [Medication] @hasMany
+  entryReports: [EntryReport] @hasMany
+}
+
+type Medication @model {
+  medication_id: ID!
+  name: String
+  next_dose: AWSDateTime
+  interval: Int
+  entry: Entry @belongsTo
+}
+
+type EntryReport @model {
+  entry_id: ID!
+  report_id: ID!
+  entry: Entry @belongsTo(fields: ["entry_id"])
+  report: Report @hasOne(fields: ["report_id"])
+}
+
+type Report @model {
+  report_id: ID!
+  date_created: AWSDateTime
+  image_uri: String
+  area: String
+  user_comments: String
+}
+
+
+
