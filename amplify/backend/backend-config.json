@@ -54,22 +54,6 @@
         }
       ]
     },
-    "AMPLIFY_storage_dermiqreactwest17ccf738f_bucketName": {
-      "usedBy": [
-        {
-          "category": "storage",
-          "resourceName": "dermiqreactwest17ccf738f"
-        }
-      ]
-    },
-    "AMPLIFY_storage_dermiqreactwest17ccf738f_region": {
-      "usedBy": [
-        {
-          "category": "storage",
-          "resourceName": "dermiqreactwest17ccf738f"
-        }
-      ]
-    },
     "AMPLIFY_storage_dermiqreactwest1a8565478_bucketName": {
       "usedBy": [
         {
@@ -88,7 +72,12 @@
     }
   },
   "storage": {
-    "dermiqreactwest17ccf738f": {
+    "skinimages": {
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "S3"
+    },
+    "skinimages-dermiq-122323182827-dev": {
       "dependsOn": [],
       "providerPlugin": "awscloudformation",
       "service": "S3",

@@ -1,4 +1,4 @@
-import { withAuthenticator, WithAuthenticatorProps, Button } from '@aws-amplify/ui-react';
+import { withAuthenticator, WithAuthenticatorProps } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import HomePage from './pages/HomePage';
 

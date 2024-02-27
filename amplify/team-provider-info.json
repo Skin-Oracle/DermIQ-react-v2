@@ -28,10 +28,7 @@
           "bucketName": "skinimages-dermiq-122323182827-dev",
           "region": "us-west-1"
         },
-        "dermiqreactwest17ccf738f": {
-          "bucketName": "skinimages-dermiq-122323182827-dev",
-          "region": "us-west-1"
-        }
+        "skinimages": {}
       }
     }
   }
