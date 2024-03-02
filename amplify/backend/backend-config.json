@@ -55,40 +55,6 @@
       "type": "manual"
     }
   },
-  "parameters": {
-    "AMPLIFY_hosting_amplifyhosting_appId": {
-      "usedBy": [
-        {
-          "category": "hosting",
-          "resourceName": "amplifyhosting"
-        }
-      ]
-    },
-    "AMPLIFY_hosting_amplifyhosting_type": {
-      "usedBy": [
-        {
-          "category": "hosting",
-          "resourceName": "amplifyhosting"
-        }
-      ]
-    },
-    "AMPLIFY_storage_dermiqreactwest1a8565478_bucketName": {
-      "usedBy": [
-        {
-          "category": "storage",
-          "resourceName": "dermiqreactwest1a8565478"
-        }
-      ]
-    },
-    "AMPLIFY_storage_dermiqreactwest1a8565478_region": {
-      "usedBy": [
-        {
-          "category": "storage",
-          "resourceName": "dermiqreactwest1a8565478"
-        }
-      ]
-    }
-  },
   "storage": {
     "skinimages": {
       "dependsOn": [],
