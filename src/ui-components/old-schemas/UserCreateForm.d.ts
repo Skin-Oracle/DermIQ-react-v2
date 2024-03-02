@@ -6,7 +6,6 @@
 
 import * as React from "react";
 import { GridProps } from "@aws-amplify/ui-react";
-import { User } from "../API.ts";
 export declare type EscapeHatchProps = {
     [elementHierarchy: string]: Record<string, unknown>;
 } | null;
@@ -22,21 +21,20 @@ export declare type ValidationResponse = {
     errorMessage?: string;
 };
 export declare type ValidationFunction<T> = (value: T, validationResponse: ValidationResponse) => ValidationResponse | Promise<ValidationResponse>;
-export declare type UserUpdateFormInputValues = {};
-export declare type UserUpdateFormValidationValues = {};
+export declare type UserCreateFormInputValues = {};
+export declare type UserCreateFormValidationValues = {};
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
-export declare type UserUpdateFormOverridesProps = {
-    UserUpdateFormGrid?: PrimitiveOverrideProps<GridProps>;
+export declare type UserCreateFormOverridesProps = {
+    UserCreateFormGrid?: PrimitiveOverrideProps<GridProps>;
 } & EscapeHatchProps;
-export declare type UserUpdateFormProps = React.PropsWithChildren<{
-    overrides?: UserUpdateFormOverridesProps | undefined | null;
+export declare type UserCreateFormProps = React.PropsWithChildren<{
+    overrides?: UserCreateFormOverridesProps | undefined | null;
 } & {
-    id?: string;
-    user?: User;
-    onSubmit?: (fields: UserUpdateFormInputValues) => UserUpdateFormInputValues;
-    onSuccess?: (fields: UserUpdateFormInputValues) => void;
-    onError?: (fields: UserUpdateFormInputValues, errorMessage: string) => void;
-    onChange?: (fields: UserUpdateFormInputValues) => UserUpdateFormInputValues;
-    onValidate?: UserUpdateFormValidationValues;
+    clearOnSuccess?: boolean;
+    onSubmit?: (fields: UserCreateFormInputValues) => UserCreateFormInputValues;
+    onSuccess?: (fields: UserCreateFormInputValues) => void;
+    onError?: (fields: UserCreateFormInputValues, errorMessage: string) => void;
+    onChange?: (fields: UserCreateFormInputValues) => UserCreateFormInputValues;
+    onValidate?: UserCreateFormValidationValues;
 } & React.CSSProperties>;
-export default function UserUpdateForm(props: UserUpdateFormProps): React.ReactElement;
+export default function UserCreateForm(props: UserCreateFormProps): React.ReactElement;

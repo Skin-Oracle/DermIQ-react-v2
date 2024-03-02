@@ -7,13 +7,15 @@
 /* eslint-disable */
 import * as React from "react";
 import { Button, Flex, Grid, TextField } from "@aws-amplify/ui-react";
-import { fetchByPath, getOverrideProps, validateField } from "./utils";
+import { fetchByPath, getOverrideProps, validateField } from "../utils";
 import { generateClient } from "aws-amplify/api";
-import { createMedication } from "../graphql/mutations";
+import { getMedication } from "../../graphql/queries";
+import { updateMedication } from "../../graphql/mutations";
 const client = generateClient();
-export default function MedicationCreateForm(props) {
+export default function MedicationUpdateForm(props) {
   const {
-    clearOnSuccess = true,
+    id: idProp,
+    medication: medicationModelProp,
     onSuccess,
     onError,
     onSubmit,
@@ -36,12 +38,32 @@ export default function MedicationCreateForm(props) {
   const [interval, setInterval] = React.useState(initialValues.interval);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
-    setMedication_id(initialValues.medication_id);
-    setName(initialValues.name);
-    setNext_dose(initialValues.next_dose);
-    setInterval(initialValues.interval);
+    const cleanValues = medicationRecord
+      ? { ...initialValues, ...medicationRecord }
+      : initialValues;
+    setMedication_id(cleanValues.medication_id);
+    setName(cleanValues.name);
+    setNext_dose(cleanValues.next_dose);
+    setInterval(cleanValues.interval);
     setErrors({});
   };
+  const [medicationRecord, setMedicationRecord] =
+    React.useState(medicationModelProp);
+  React.useEffect(() => {
+    const queryData = async () => {
+      const record = idProp
+        ? (
+            await client.graphql({
+              query: getMedication.replaceAll("__typename", ""),
+              variables: { id: idProp },
+            })
+          )?.data?.getMedication
+        : medicationModelProp;
+      setMedicationRecord(record);
+    };
+    queryData();
+  }, [idProp, medicationModelProp]);
+  React.useEffect(resetStateValues, [medicationRecord]);
   const validations = {
     medication_id: [{ type: "Required" }],
     name: [],
@@ -92,9 +114,9 @@ export default function MedicationCreateForm(props) {
         event.preventDefault();
         let modelFields = {
           medication_id,
-          name,
-          next_dose,
-          interval,
+          name: name ?? null,
+          next_dose: next_dose ?? null,
+          interval: interval ?? null,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -125,18 +147,16 @@ export default function MedicationCreateForm(props) {
             }
           });
           await client.graphql({
-            query: createMedication.replaceAll("__typename", ""),
+            query: updateMedication.replaceAll("__typename", ""),
             variables: {
               input: {
+                id: medicationRecord.id,
                 ...modelFields,
               },
             },
           });
           if (onSuccess) {
             onSuccess(modelFields);
-          }
-          if (clearOnSuccess) {
-            resetStateValues();
           }
         } catch (err) {
           if (onError) {
@@ -145,7 +165,7 @@ export default function MedicationCreateForm(props) {
           }
         }
       }}
-      {...getOverrideProps(overrides, "MedicationCreateForm")}
+      {...getOverrideProps(overrides, "MedicationUpdateForm")}
       {...rest}
     >
       <TextField
@@ -267,13 +287,14 @@ export default function MedicationCreateForm(props) {
         {...getOverrideProps(overrides, "CTAFlex")}
       >
         <Button
-          children="Clear"
+          children="Reset"
           type="reset"
           onClick={(event) => {
             event.preventDefault();
             resetStateValues();
           }}
-          {...getOverrideProps(overrides, "ClearButton")}
+          isDisabled={!(idProp || medicationModelProp)}
+          {...getOverrideProps(overrides, "ResetButton")}
         ></Button>
         <Flex
           gap="15px"
@@ -283,7 +304,10 @@ export default function MedicationCreateForm(props) {
             children="Submit"
             type="submit"
             variation="primary"
-            isDisabled={Object.values(errors).some((e) => e?.hasError)}
+            isDisabled={
+              !(idProp || medicationModelProp) ||
+              Object.values(errors).some((e) => e?.hasError)
+            }
             {...getOverrideProps(overrides, "SubmitButton")}
           ></Button>
         </Flex>

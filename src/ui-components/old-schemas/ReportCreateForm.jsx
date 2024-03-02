@@ -7,15 +7,13 @@
 /* eslint-disable */
 import * as React from "react";
 import { Button, Flex, Grid, TextField } from "@aws-amplify/ui-react";
-import { fetchByPath, getOverrideProps, validateField } from "./utils";
+import { fetchByPath, getOverrideProps, validateField } from "../utils";
 import { generateClient } from "aws-amplify/api";
-import { getReport } from "../graphql/queries";
-import { updateReport } from "../graphql/mutations";
+import { createReport } from "../../graphql/mutations";
 const client = generateClient();
-export default function ReportUpdateForm(props) {
+export default function ReportCreateForm(props) {
   const {
-    id: idProp,
-    report: reportModelProp,
+    clearOnSuccess = true,
     onSuccess,
     onError,
     onSubmit,
@@ -42,32 +40,13 @@ export default function ReportUpdateForm(props) {
   );
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
-    const cleanValues = reportRecord
-      ? { ...initialValues, ...reportRecord }
-      : initialValues;
-    setReport_id(cleanValues.report_id);
-    setDate_created(cleanValues.date_created);
-    setImage_uri(cleanValues.image_uri);
-    setArea(cleanValues.area);
-    setUser_comments(cleanValues.user_comments);
+    setReport_id(initialValues.report_id);
+    setDate_created(initialValues.date_created);
+    setImage_uri(initialValues.image_uri);
+    setArea(initialValues.area);
+    setUser_comments(initialValues.user_comments);
     setErrors({});
   };
-  const [reportRecord, setReportRecord] = React.useState(reportModelProp);
-  React.useEffect(() => {
-    const queryData = async () => {
-      const record = idProp
-        ? (
-            await client.graphql({
-              query: getReport.replaceAll("__typename", ""),
-              variables: { id: idProp },
-            })
-          )?.data?.getReport
-        : reportModelProp;
-      setReportRecord(record);
-    };
-    queryData();
-  }, [idProp, reportModelProp]);
-  React.useEffect(resetStateValues, [reportRecord]);
   const validations = {
     report_id: [{ type: "Required" }],
     date_created: [],
@@ -119,10 +98,10 @@ export default function ReportUpdateForm(props) {
         event.preventDefault();
         let modelFields = {
           report_id,
-          date_created: date_created ?? null,
-          image_uri: image_uri ?? null,
-          area: area ?? null,
-          user_comments: user_comments ?? null,
+          date_created,
+          image_uri,
+          area,
+          user_comments,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -153,16 +132,18 @@ export default function ReportUpdateForm(props) {
             }
           });
           await client.graphql({
-            query: updateReport.replaceAll("__typename", ""),
+            query: createReport.replaceAll("__typename", ""),
             variables: {
               input: {
-                id: reportRecord.id,
                 ...modelFields,
               },
             },
           });
           if (onSuccess) {
             onSuccess(modelFields);
+          }
+          if (clearOnSuccess) {
+            resetStateValues();
           }
         } catch (err) {
           if (onError) {
@@ -171,7 +152,7 @@ export default function ReportUpdateForm(props) {
           }
         }
       }}
-      {...getOverrideProps(overrides, "ReportUpdateForm")}
+      {...getOverrideProps(overrides, "ReportCreateForm")}
       {...rest}
     >
       <TextField
@@ -321,14 +302,13 @@ export default function ReportUpdateForm(props) {
         {...getOverrideProps(overrides, "CTAFlex")}
       >
         <Button
-          children="Reset"
+          children="Clear"
           type="reset"
           onClick={(event) => {
             event.preventDefault();
             resetStateValues();
           }}
-          isDisabled={!(idProp || reportModelProp)}
-          {...getOverrideProps(overrides, "ResetButton")}
+          {...getOverrideProps(overrides, "ClearButton")}
         ></Button>
         <Flex
           gap="15px"
@@ -338,10 +318,7 @@ export default function ReportUpdateForm(props) {
             children="Submit"
             type="submit"
             variation="primary"
-            isDisabled={
-              !(idProp || reportModelProp) ||
-              Object.values(errors).some((e) => e?.hasError)
-            }
+            isDisabled={Object.values(errors).some((e) => e?.hasError)}
             {...getOverrideProps(overrides, "SubmitButton")}
           ></Button>
         </Flex>
