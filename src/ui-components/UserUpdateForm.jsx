@@ -6,7 +6,7 @@
 
 /* eslint-disable */
 import * as React from "react";
-import { Button, Flex, Grid, TextField } from "@aws-amplify/ui-react";
+import { Button, Flex, Grid } from "@aws-amplify/ui-react";
 import { fetchByPath, getOverrideProps, validateField } from "./utils";
 import { generateClient } from "aws-amplify/api";
 import { getUser } from "../graphql/queries";
@@ -24,16 +24,12 @@ export default function UserUpdateForm(props) {
     overrides,
     ...rest
   } = props;
-  const initialValues = {
-    user_id: "",
-  };
-  const [user_id, setUser_id] = React.useState(initialValues.user_id);
+  const initialValues = {};
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     const cleanValues = userRecord
       ? { ...initialValues, ...userRecord }
       : initialValues;
-    setUser_id(cleanValues.user_id);
     setErrors({});
   };
   const [userRecord, setUserRecord] = React.useState(userModelProp);
@@ -52,9 +48,7 @@ export default function UserUpdateForm(props) {
     queryData();
   }, [idProp, userModelProp]);
   React.useEffect(resetStateValues, [userRecord]);
-  const validations = {
-    user_id: [{ type: "Required" }],
-  };
+  const validations = {};
   const runValidationTasks = async (
     fieldName,
     currentValue,
@@ -80,9 +74,7 @@ export default function UserUpdateForm(props) {
       padding="20px"
       onSubmit={async (event) => {
         event.preventDefault();
-        let modelFields = {
-          user_id,
-        };
+        let modelFields = {};
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
             if (Array.isArray(modelFields[fieldName])) {
@@ -133,30 +125,6 @@ export default function UserUpdateForm(props) {
       {...getOverrideProps(overrides, "UserUpdateForm")}
       {...rest}
     >
-      <TextField
-        label="User id"
-        isRequired={true}
-        isReadOnly={false}
-        value={user_id}
-        onChange={(e) => {
-          let { value } = e.target;
-          if (onChange) {
-            const modelFields = {
-              user_id: value,
-            };
-            const result = onChange(modelFields);
-            value = result?.user_id ?? value;
-          }
-          if (errors.user_id?.hasError) {
-            runValidationTasks("user_id", value);
-          }
-          setUser_id(value);
-        }}
-        onBlur={() => runValidationTasks("user_id", user_id)}
-        errorMessage={errors.user_id?.errorMessage}
-        hasError={errors.user_id?.hasError}
-        {...getOverrideProps(overrides, "user_id")}
-      ></TextField>
       <Flex
         justifyContent="space-between"
         {...getOverrideProps(overrides, "CTAFlex")}
