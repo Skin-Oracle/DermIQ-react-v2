@@ -5,7 +5,7 @@ import DermLogo from '../assets/DermLogo.png';
 import './HomePage.css';
 
 
-function HomePage({ signOut, user }: WithAuthenticatorProps) {
+function HomePage({ signOut }: WithAuthenticatorProps) {
   return (
     
     <div className='container'>

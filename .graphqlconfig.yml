@@ -1,15 +1,16 @@
 projects:
   dermiqreactwest1:
-    schemaPath: src/graphql/schema.json
+    schemaPath: amplify/backend/api/dermiqreactwest1/build/schema.graphql
     includes:
       - src/graphql/**/*.ts
     excludes:
       - ./amplify/**
+      - src/API.ts
     extensions:
       amplify:
         codeGenTarget: typescript
         generatedFileName: src/API.ts
         docsFilePath: src/graphql
-extensions:
-  amplify:
-    version: 3
+        region: us-west-1
+        apiId: null
+        maxDepth: 2
