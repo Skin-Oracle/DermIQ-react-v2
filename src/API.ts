@@ -8,7 +8,7 @@ export type CreateReportInput = {
   area?: number | null,
   usercomments?: string | null,
   nlpresponse?: string | null,
-  entryID: string,
+  entry_id?: string | null,
 };
 
 export type ModelReportConditionInput = {
@@ -16,7 +16,7 @@ export type ModelReportConditionInput = {
   area?: ModelFloatInput | null,
   usercomments?: ModelStringInput | null,
   nlpresponse?: ModelStringInput | null,
-  entryID?: ModelIDInput | null,
+  entry_id?: ModelStringInput | null,
   and?: Array< ModelReportConditionInput | null > | null,
   or?: Array< ModelReportConditionInput | null > | null,
   not?: ModelReportConditionInput | null,
@@ -74,22 +74,6 @@ export type ModelFloatInput = {
   attributeType?: ModelAttributeTypes | null,
 };
 
-export type ModelIDInput = {
-  ne?: string | null,
-  eq?: string | null,
-  le?: string | null,
-  lt?: string | null,
-  ge?: string | null,
-  gt?: string | null,
-  contains?: string | null,
-  notContains?: string | null,
-  between?: Array< string | null > | null,
-  beginsWith?: string | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
-  size?: ModelSizeInput | null,
-};
-
 export type Report = {
   __typename: "Report",
   id: string,
@@ -97,7 +81,7 @@ export type Report = {
   area?: number | null,
   usercomments?: string | null,
   nlpresponse?: string | null,
-  entryID: string,
+  entry_id?: string | null,
   createdAt: string,
   updatedAt: string,
 };
@@ -108,7 +92,7 @@ export type UpdateReportInput = {
   area?: number | null,
   usercomments?: string | null,
   nlpresponse?: string | null,
-  entryID?: string | null,
+  entry_id?: string | null,
 };
 
 export type DeleteReportInput = {
@@ -128,51 +112,8 @@ export type ModelUserConditionInput = {
 export type User = {
   __typename: "User",
   id: string,
-  Entries?: ModelEntryConnection | null,
   createdAt: string,
   updatedAt: string,
-};
-
-export type ModelEntryConnection = {
-  __typename: "ModelEntryConnection",
-  items:  Array<Entry | null >,
-  nextToken?: string | null,
-};
-
-export type Entry = {
-  __typename: "Entry",
-  id: string,
-  body_part?: string | null,
-  entry_name?: string | null,
-  medications?: ModelMedicationConnection | null,
-  diagnosis?: string | null,
-  userID: string,
-  Reports?: ModelReportConnection | null,
-  createdAt: string,
-  updatedAt: string,
-};
-
-export type ModelMedicationConnection = {
-  __typename: "ModelMedicationConnection",
-  items:  Array<Medication | null >,
-  nextToken?: string | null,
-};
-
-export type Medication = {
-  __typename: "Medication",
-  id: string,
-  name?: string | null,
-  next_dose?: string | null,
-  interval?: number | null,
-  entryID: string,
-  createdAt: string,
-  updatedAt: string,
-};
-
-export type ModelReportConnection = {
-  __typename: "ModelReportConnection",
-  items:  Array<Report | null >,
-  nextToken?: string | null,
 };
 
 export type UpdateUserInput = {
@@ -188,17 +129,44 @@ export type CreateEntryInput = {
   body_part?: string | null,
   entry_name?: string | null,
   diagnosis?: string | null,
-  userID: string,
+  user_id?: string | null,
 };
 
 export type ModelEntryConditionInput = {
   body_part?: ModelStringInput | null,
   entry_name?: ModelStringInput | null,
   diagnosis?: ModelStringInput | null,
-  userID?: ModelIDInput | null,
+  user_id?: ModelIDInput | null,
   and?: Array< ModelEntryConditionInput | null > | null,
   or?: Array< ModelEntryConditionInput | null > | null,
   not?: ModelEntryConditionInput | null,
+};
+
+export type ModelIDInput = {
+  ne?: string | null,
+  eq?: string | null,
+  le?: string | null,
+  lt?: string | null,
+  ge?: string | null,
+  gt?: string | null,
+  contains?: string | null,
+  notContains?: string | null,
+  between?: Array< string | null > | null,
+  beginsWith?: string | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+  size?: ModelSizeInput | null,
+};
+
+export type Entry = {
+  __typename: "Entry",
+  id: string,
+  body_part?: string | null,
+  entry_name?: string | null,
+  diagnosis?: string | null,
+  user_id?: string | null,
+  createdAt: string,
+  updatedAt: string,
 };
 
 export type UpdateEntryInput = {
@@ -206,7 +174,7 @@ export type UpdateEntryInput = {
   body_part?: string | null,
   entry_name?: string | null,
   diagnosis?: string | null,
-  userID?: string | null,
+  user_id?: string | null,
 };
 
 export type DeleteEntryInput = {
@@ -218,14 +186,14 @@ export type CreateMedicationInput = {
   name?: string | null,
   next_dose?: string | null,
   interval?: number | null,
-  entryID: string,
+  entry_id?: string | null,
 };
 
 export type ModelMedicationConditionInput = {
   name?: ModelStringInput | null,
   next_dose?: ModelStringInput | null,
   interval?: ModelIntInput | null,
-  entryID?: ModelIDInput | null,
+  entry_id?: ModelIDInput | null,
   and?: Array< ModelMedicationConditionInput | null > | null,
   or?: Array< ModelMedicationConditionInput | null > | null,
   not?: ModelMedicationConditionInput | null,
@@ -243,12 +211,23 @@ export type ModelIntInput = {
   attributeType?: ModelAttributeTypes | null,
 };
 
+export type Medication = {
+  __typename: "Medication",
+  id: string,
+  name?: string | null,
+  next_dose?: string | null,
+  interval?: number | null,
+  entry_id?: string | null,
+  createdAt: string,
+  updatedAt: string,
+};
+
 export type UpdateMedicationInput = {
   id: string,
   name?: string | null,
   next_dose?: string | null,
   interval?: number | null,
-  entryID?: string | null,
+  entry_id?: string | null,
 };
 
 export type DeleteMedicationInput = {
@@ -261,10 +240,16 @@ export type ModelReportFilterInput = {
   area?: ModelFloatInput | null,
   usercomments?: ModelStringInput | null,
   nlpresponse?: ModelStringInput | null,
-  entryID?: ModelIDInput | null,
+  entry_id?: ModelStringInput | null,
   and?: Array< ModelReportFilterInput | null > | null,
   or?: Array< ModelReportFilterInput | null > | null,
   not?: ModelReportFilterInput | null,
+};
+
+export type ModelReportConnection = {
+  __typename: "ModelReportConnection",
+  items:  Array<Report | null >,
+  nextToken?: string | null,
 };
 
 export type ModelUserFilterInput = {
@@ -285,10 +270,16 @@ export type ModelEntryFilterInput = {
   body_part?: ModelStringInput | null,
   entry_name?: ModelStringInput | null,
   diagnosis?: ModelStringInput | null,
-  userID?: ModelIDInput | null,
+  user_id?: ModelIDInput | null,
   and?: Array< ModelEntryFilterInput | null > | null,
   or?: Array< ModelEntryFilterInput | null > | null,
   not?: ModelEntryFilterInput | null,
+};
+
+export type ModelEntryConnection = {
+  __typename: "ModelEntryConnection",
+  items:  Array<Entry | null >,
+  nextToken?: string | null,
 };
 
 export type ModelMedicationFilterInput = {
@@ -296,17 +287,17 @@ export type ModelMedicationFilterInput = {
   name?: ModelStringInput | null,
   next_dose?: ModelStringInput | null,
   interval?: ModelIntInput | null,
-  entryID?: ModelIDInput | null,
+  entry_id?: ModelIDInput | null,
   and?: Array< ModelMedicationFilterInput | null > | null,
   or?: Array< ModelMedicationFilterInput | null > | null,
   not?: ModelMedicationFilterInput | null,
 };
 
-export enum ModelSortDirection {
-  ASC = "ASC",
-  DESC = "DESC",
-}
-
+export type ModelMedicationConnection = {
+  __typename: "ModelMedicationConnection",
+  items:  Array<Medication | null >,
+  nextToken?: string | null,
+};
 
 export type ModelSubscriptionReportFilterInput = {
   id?: ModelSubscriptionIDInput | null,
@@ -314,7 +305,7 @@ export type ModelSubscriptionReportFilterInput = {
   area?: ModelSubscriptionFloatInput | null,
   usercomments?: ModelSubscriptionStringInput | null,
   nlpresponse?: ModelSubscriptionStringInput | null,
-  entryID?: ModelSubscriptionIDInput | null,
+  entry_id?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionReportFilterInput | null > | null,
   or?: Array< ModelSubscriptionReportFilterInput | null > | null,
 };
@@ -372,7 +363,7 @@ export type ModelSubscriptionEntryFilterInput = {
   body_part?: ModelSubscriptionStringInput | null,
   entry_name?: ModelSubscriptionStringInput | null,
   diagnosis?: ModelSubscriptionStringInput | null,
-  userID?: ModelSubscriptionIDInput | null,
+  user_id?: ModelSubscriptionIDInput | null,
   and?: Array< ModelSubscriptionEntryFilterInput | null > | null,
   or?: Array< ModelSubscriptionEntryFilterInput | null > | null,
 };
@@ -382,7 +373,7 @@ export type ModelSubscriptionMedicationFilterInput = {
   name?: ModelSubscriptionStringInput | null,
   next_dose?: ModelSubscriptionStringInput | null,
   interval?: ModelSubscriptionIntInput | null,
-  entryID?: ModelSubscriptionIDInput | null,
+  entry_id?: ModelSubscriptionIDInput | null,
   and?: Array< ModelSubscriptionMedicationFilterInput | null > | null,
   or?: Array< ModelSubscriptionMedicationFilterInput | null > | null,
 };
@@ -412,7 +403,7 @@ export type CreateReportMutation = {
     area?: number | null,
     usercomments?: string | null,
     nlpresponse?: string | null,
-    entryID: string,
+    entry_id?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -431,7 +422,7 @@ export type UpdateReportMutation = {
     area?: number | null,
     usercomments?: string | null,
     nlpresponse?: string | null,
-    entryID: string,
+    entry_id?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -450,7 +441,7 @@ export type DeleteReportMutation = {
     area?: number | null,
     usercomments?: string | null,
     nlpresponse?: string | null,
-    entryID: string,
+    entry_id?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -465,10 +456,6 @@ export type CreateUserMutation = {
   createUser?:  {
     __typename: "User",
     id: string,
-    Entries?:  {
-      __typename: "ModelEntryConnection",
-      nextToken?: string | null,
-    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -483,10 +470,6 @@ export type UpdateUserMutation = {
   updateUser?:  {
     __typename: "User",
     id: string,
-    Entries?:  {
-      __typename: "ModelEntryConnection",
-      nextToken?: string | null,
-    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -501,10 +484,6 @@ export type DeleteUserMutation = {
   deleteUser?:  {
     __typename: "User",
     id: string,
-    Entries?:  {
-      __typename: "ModelEntryConnection",
-      nextToken?: string | null,
-    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -521,16 +500,8 @@ export type CreateEntryMutation = {
     id: string,
     body_part?: string | null,
     entry_name?: string | null,
-    medications?:  {
-      __typename: "ModelMedicationConnection",
-      nextToken?: string | null,
-    } | null,
     diagnosis?: string | null,
-    userID: string,
-    Reports?:  {
-      __typename: "ModelReportConnection",
-      nextToken?: string | null,
-    } | null,
+    user_id?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -547,16 +518,8 @@ export type UpdateEntryMutation = {
     id: string,
     body_part?: string | null,
     entry_name?: string | null,
-    medications?:  {
-      __typename: "ModelMedicationConnection",
-      nextToken?: string | null,
-    } | null,
     diagnosis?: string | null,
-    userID: string,
-    Reports?:  {
-      __typename: "ModelReportConnection",
-      nextToken?: string | null,
-    } | null,
+    user_id?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -573,16 +536,8 @@ export type DeleteEntryMutation = {
     id: string,
     body_part?: string | null,
     entry_name?: string | null,
-    medications?:  {
-      __typename: "ModelMedicationConnection",
-      nextToken?: string | null,
-    } | null,
     diagnosis?: string | null,
-    userID: string,
-    Reports?:  {
-      __typename: "ModelReportConnection",
-      nextToken?: string | null,
-    } | null,
+    user_id?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -600,7 +555,7 @@ export type CreateMedicationMutation = {
     name?: string | null,
     next_dose?: string | null,
     interval?: number | null,
-    entryID: string,
+    entry_id?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -618,7 +573,7 @@ export type UpdateMedicationMutation = {
     name?: string | null,
     next_dose?: string | null,
     interval?: number | null,
-    entryID: string,
+    entry_id?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -636,7 +591,7 @@ export type DeleteMedicationMutation = {
     name?: string | null,
     next_dose?: string | null,
     interval?: number | null,
-    entryID: string,
+    entry_id?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -654,7 +609,7 @@ export type GetReportQuery = {
     area?: number | null,
     usercomments?: string | null,
     nlpresponse?: string | null,
-    entryID: string,
+    entry_id?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -676,7 +631,7 @@ export type ListReportsQuery = {
       area?: number | null,
       usercomments?: string | null,
       nlpresponse?: string | null,
-      entryID: string,
+      entry_id?: string | null,
       createdAt: string,
       updatedAt: string,
     } | null >,
@@ -692,10 +647,6 @@ export type GetUserQuery = {
   getUser?:  {
     __typename: "User",
     id: string,
-    Entries?:  {
-      __typename: "ModelEntryConnection",
-      nextToken?: string | null,
-    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -730,16 +681,8 @@ export type GetEntryQuery = {
     id: string,
     body_part?: string | null,
     entry_name?: string | null,
-    medications?:  {
-      __typename: "ModelMedicationConnection",
-      nextToken?: string | null,
-    } | null,
     diagnosis?: string | null,
-    userID: string,
-    Reports?:  {
-      __typename: "ModelReportConnection",
-      nextToken?: string | null,
-    } | null,
+    user_id?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -760,7 +703,7 @@ export type ListEntriesQuery = {
       body_part?: string | null,
       entry_name?: string | null,
       diagnosis?: string | null,
-      userID: string,
+      user_id?: string | null,
       createdAt: string,
       updatedAt: string,
     } | null >,
@@ -779,7 +722,7 @@ export type GetMedicationQuery = {
     name?: string | null,
     next_dose?: string | null,
     interval?: number | null,
-    entryID: string,
+    entry_id?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -800,83 +743,7 @@ export type ListMedicationsQuery = {
       name?: string | null,
       next_dose?: string | null,
       interval?: number | null,
-      entryID: string,
-      createdAt: string,
-      updatedAt: string,
-    } | null >,
-    nextToken?: string | null,
-  } | null,
-};
-
-export type ReportsByEntryIDQueryVariables = {
-  entryID: string,
-  sortDirection?: ModelSortDirection | null,
-  filter?: ModelReportFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type ReportsByEntryIDQuery = {
-  reportsByEntryID?:  {
-    __typename: "ModelReportConnection",
-    items:  Array< {
-      __typename: "Report",
-      id: string,
-      imageuri?: string | null,
-      area?: number | null,
-      usercomments?: string | null,
-      nlpresponse?: string | null,
-      entryID: string,
-      createdAt: string,
-      updatedAt: string,
-    } | null >,
-    nextToken?: string | null,
-  } | null,
-};
-
-export type EntriesByUserIDQueryVariables = {
-  userID: string,
-  sortDirection?: ModelSortDirection | null,
-  filter?: ModelEntryFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type EntriesByUserIDQuery = {
-  entriesByUserID?:  {
-    __typename: "ModelEntryConnection",
-    items:  Array< {
-      __typename: "Entry",
-      id: string,
-      body_part?: string | null,
-      entry_name?: string | null,
-      diagnosis?: string | null,
-      userID: string,
-      createdAt: string,
-      updatedAt: string,
-    } | null >,
-    nextToken?: string | null,
-  } | null,
-};
-
-export type MedicationsByEntryIDQueryVariables = {
-  entryID: string,
-  sortDirection?: ModelSortDirection | null,
-  filter?: ModelMedicationFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type MedicationsByEntryIDQuery = {
-  medicationsByEntryID?:  {
-    __typename: "ModelMedicationConnection",
-    items:  Array< {
-      __typename: "Medication",
-      id: string,
-      name?: string | null,
-      next_dose?: string | null,
-      interval?: number | null,
-      entryID: string,
+      entry_id?: string | null,
       createdAt: string,
       updatedAt: string,
     } | null >,
@@ -896,7 +763,7 @@ export type OnCreateReportSubscription = {
     area?: number | null,
     usercomments?: string | null,
     nlpresponse?: string | null,
-    entryID: string,
+    entry_id?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -914,7 +781,7 @@ export type OnUpdateReportSubscription = {
     area?: number | null,
     usercomments?: string | null,
     nlpresponse?: string | null,
-    entryID: string,
+    entry_id?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -932,7 +799,7 @@ export type OnDeleteReportSubscription = {
     area?: number | null,
     usercomments?: string | null,
     nlpresponse?: string | null,
-    entryID: string,
+    entry_id?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -946,10 +813,6 @@ export type OnCreateUserSubscription = {
   onCreateUser?:  {
     __typename: "User",
     id: string,
-    Entries?:  {
-      __typename: "ModelEntryConnection",
-      nextToken?: string | null,
-    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -963,10 +826,6 @@ export type OnUpdateUserSubscription = {
   onUpdateUser?:  {
     __typename: "User",
     id: string,
-    Entries?:  {
-      __typename: "ModelEntryConnection",
-      nextToken?: string | null,
-    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -980,10 +839,6 @@ export type OnDeleteUserSubscription = {
   onDeleteUser?:  {
     __typename: "User",
     id: string,
-    Entries?:  {
-      __typename: "ModelEntryConnection",
-      nextToken?: string | null,
-    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -999,16 +854,8 @@ export type OnCreateEntrySubscription = {
     id: string,
     body_part?: string | null,
     entry_name?: string | null,
-    medications?:  {
-      __typename: "ModelMedicationConnection",
-      nextToken?: string | null,
-    } | null,
     diagnosis?: string | null,
-    userID: string,
-    Reports?:  {
-      __typename: "ModelReportConnection",
-      nextToken?: string | null,
-    } | null,
+    user_id?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1024,16 +871,8 @@ export type OnUpdateEntrySubscription = {
     id: string,
     body_part?: string | null,
     entry_name?: string | null,
-    medications?:  {
-      __typename: "ModelMedicationConnection",
-      nextToken?: string | null,
-    } | null,
     diagnosis?: string | null,
-    userID: string,
-    Reports?:  {
-      __typename: "ModelReportConnection",
-      nextToken?: string | null,
-    } | null,
+    user_id?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1049,16 +888,8 @@ export type OnDeleteEntrySubscription = {
     id: string,
     body_part?: string | null,
     entry_name?: string | null,
-    medications?:  {
-      __typename: "ModelMedicationConnection",
-      nextToken?: string | null,
-    } | null,
     diagnosis?: string | null,
-    userID: string,
-    Reports?:  {
-      __typename: "ModelReportConnection",
-      nextToken?: string | null,
-    } | null,
+    user_id?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1075,7 +906,7 @@ export type OnCreateMedicationSubscription = {
     name?: string | null,
     next_dose?: string | null,
     interval?: number | null,
-    entryID: string,
+    entry_id?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1092,7 +923,7 @@ export type OnUpdateMedicationSubscription = {
     name?: string | null,
     next_dose?: string | null,
     interval?: number | null,
-    entryID: string,
+    entry_id?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1109,7 +940,7 @@ export type OnDeleteMedicationSubscription = {
     name?: string | null,
     next_dose?: string | null,
     interval?: number | null,
-    entryID: string,
+    entry_id?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,

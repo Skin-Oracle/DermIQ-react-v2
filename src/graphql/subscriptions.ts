@@ -15,7 +15,7 @@ export const onCreateReport = /* GraphQL */ `subscription OnCreateReport($filter
     area
     usercomments
     nlpresponse
-    entryID
+    entry_id
     createdAt
     updatedAt
     __typename
@@ -32,7 +32,7 @@ export const onUpdateReport = /* GraphQL */ `subscription OnUpdateReport($filter
     area
     usercomments
     nlpresponse
-    entryID
+    entry_id
     createdAt
     updatedAt
     __typename
@@ -49,7 +49,7 @@ export const onDeleteReport = /* GraphQL */ `subscription OnDeleteReport($filter
     area
     usercomments
     nlpresponse
-    entryID
+    entry_id
     createdAt
     updatedAt
     __typename
@@ -62,10 +62,6 @@ export const onDeleteReport = /* GraphQL */ `subscription OnDeleteReport($filter
 export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: ModelSubscriptionUserFilterInput) {
   onCreateUser(filter: $filter) {
     id
-    Entries {
-      nextToken
-      __typename
-    }
     createdAt
     updatedAt
     __typename
@@ -78,10 +74,6 @@ export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: Mo
 export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: ModelSubscriptionUserFilterInput) {
   onUpdateUser(filter: $filter) {
     id
-    Entries {
-      nextToken
-      __typename
-    }
     createdAt
     updatedAt
     __typename
@@ -94,10 +86,6 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: Mo
 export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: ModelSubscriptionUserFilterInput) {
   onDeleteUser(filter: $filter) {
     id
-    Entries {
-      nextToken
-      __typename
-    }
     createdAt
     updatedAt
     __typename
@@ -112,16 +100,8 @@ export const onCreateEntry = /* GraphQL */ `subscription OnCreateEntry($filter: 
     id
     body_part
     entry_name
-    medications {
-      nextToken
-      __typename
-    }
     diagnosis
-    userID
-    Reports {
-      nextToken
-      __typename
-    }
+    user_id
     createdAt
     updatedAt
     __typename
@@ -136,16 +116,8 @@ export const onUpdateEntry = /* GraphQL */ `subscription OnUpdateEntry($filter: 
     id
     body_part
     entry_name
-    medications {
-      nextToken
-      __typename
-    }
     diagnosis
-    userID
-    Reports {
-      nextToken
-      __typename
-    }
+    user_id
     createdAt
     updatedAt
     __typename
@@ -160,16 +132,8 @@ export const onDeleteEntry = /* GraphQL */ `subscription OnDeleteEntry($filter: 
     id
     body_part
     entry_name
-    medications {
-      nextToken
-      __typename
-    }
     diagnosis
-    userID
-    Reports {
-      nextToken
-      __typename
-    }
+    user_id
     createdAt
     updatedAt
     __typename
@@ -187,7 +151,7 @@ export const onCreateMedication = /* GraphQL */ `subscription OnCreateMedication
     name
     next_dose
     interval
-    entryID
+    entry_id
     createdAt
     updatedAt
     __typename
@@ -205,7 +169,7 @@ export const onUpdateMedication = /* GraphQL */ `subscription OnUpdateMedication
     name
     next_dose
     interval
-    entryID
+    entry_id
     createdAt
     updatedAt
     __typename
@@ -223,7 +187,7 @@ export const onDeleteMedication = /* GraphQL */ `subscription OnDeleteMedication
     name
     next_dose
     interval
-    entryID
+    entry_id
     createdAt
     updatedAt
     __typename

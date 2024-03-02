@@ -15,7 +15,7 @@ export const getReport = /* GraphQL */ `query GetReport($id: ID!) {
     area
     usercomments
     nlpresponse
-    entryID
+    entry_id
     createdAt
     updatedAt
     __typename
@@ -34,7 +34,7 @@ export const listReports = /* GraphQL */ `query ListReports(
       area
       usercomments
       nlpresponse
-      entryID
+      entry_id
       createdAt
       updatedAt
       __typename
@@ -50,10 +50,6 @@ export const listReports = /* GraphQL */ `query ListReports(
 export const getUser = /* GraphQL */ `query GetUser($id: ID!) {
   getUser(id: $id) {
     id
-    Entries {
-      nextToken
-      __typename
-    }
     createdAt
     updatedAt
     __typename
@@ -82,16 +78,8 @@ export const getEntry = /* GraphQL */ `query GetEntry($id: ID!) {
     id
     body_part
     entry_name
-    medications {
-      nextToken
-      __typename
-    }
     diagnosis
-    userID
-    Reports {
-      nextToken
-      __typename
-    }
+    user_id
     createdAt
     updatedAt
     __typename
@@ -109,7 +97,7 @@ export const listEntries = /* GraphQL */ `query ListEntries(
       body_part
       entry_name
       diagnosis
-      userID
+      user_id
       createdAt
       updatedAt
       __typename
@@ -128,7 +116,7 @@ export const getMedication = /* GraphQL */ `query GetMedication($id: ID!) {
     name
     next_dose
     interval
-    entryID
+    entry_id
     createdAt
     updatedAt
     __typename
@@ -149,7 +137,7 @@ export const listMedications = /* GraphQL */ `query ListMedications(
       name
       next_dose
       interval
-      entryID
+      entry_id
       createdAt
       updatedAt
       __typename
@@ -161,101 +149,4 @@ export const listMedications = /* GraphQL */ `query ListMedications(
 ` as GeneratedQuery<
   APITypes.ListMedicationsQueryVariables,
   APITypes.ListMedicationsQuery
->;
-export const reportsByEntryID = /* GraphQL */ `query ReportsByEntryID(
-  $entryID: ID!
-  $sortDirection: ModelSortDirection
-  $filter: ModelReportFilterInput
-  $limit: Int
-  $nextToken: String
-) {
-  reportsByEntryID(
-    entryID: $entryID
-    sortDirection: $sortDirection
-    filter: $filter
-    limit: $limit
-    nextToken: $nextToken
-  ) {
-    items {
-      id
-      imageuri
-      area
-      usercomments
-      nlpresponse
-      entryID
-      createdAt
-      updatedAt
-      __typename
-    }
-    nextToken
-    __typename
-  }
-}
-` as GeneratedQuery<
-  APITypes.ReportsByEntryIDQueryVariables,
-  APITypes.ReportsByEntryIDQuery
->;
-export const entriesByUserID = /* GraphQL */ `query EntriesByUserID(
-  $userID: ID!
-  $sortDirection: ModelSortDirection
-  $filter: ModelEntryFilterInput
-  $limit: Int
-  $nextToken: String
-) {
-  entriesByUserID(
-    userID: $userID
-    sortDirection: $sortDirection
-    filter: $filter
-    limit: $limit
-    nextToken: $nextToken
-  ) {
-    items {
-      id
-      body_part
-      entry_name
-      diagnosis
-      userID
-      createdAt
-      updatedAt
-      __typename
-    }
-    nextToken
-    __typename
-  }
-}
-` as GeneratedQuery<
-  APITypes.EntriesByUserIDQueryVariables,
-  APITypes.EntriesByUserIDQuery
->;
-export const medicationsByEntryID = /* GraphQL */ `query MedicationsByEntryID(
-  $entryID: ID!
-  $sortDirection: ModelSortDirection
-  $filter: ModelMedicationFilterInput
-  $limit: Int
-  $nextToken: String
-) {
-  medicationsByEntryID(
-    entryID: $entryID
-    sortDirection: $sortDirection
-    filter: $filter
-    limit: $limit
-    nextToken: $nextToken
-  ) {
-    items {
-      id
-      name
-      next_dose
-      interval
-      entryID
-      createdAt
-      updatedAt
-      __typename
-    }
-    nextToken
-    __typename
-  }
-}
-` as GeneratedQuery<
-  APITypes.MedicationsByEntryIDQueryVariables,
-  APITypes.MedicationsByEntryIDQuery
 >;
