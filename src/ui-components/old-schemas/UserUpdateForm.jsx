@@ -7,10 +7,10 @@
 /* eslint-disable */
 import * as React from "react";
 import { Button, Flex, Grid } from "@aws-amplify/ui-react";
-import { fetchByPath, getOverrideProps, validateField } from "./utils";
+import { fetchByPath, getOverrideProps, validateField } from "../utils";
 import { generateClient } from "aws-amplify/api";
-import { getUser } from "../graphql/queries";
-import { updateUser } from "../graphql/mutations";
+import { getUser } from "../../graphql/queries";
+import { updateUser } from "../../graphql/mutations";
 const client = generateClient();
 export default function UserUpdateForm(props) {
   const {

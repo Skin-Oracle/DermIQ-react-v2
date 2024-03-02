@@ -7,15 +7,15 @@
 /* eslint-disable */
 import * as React from "react";
 import { Button, Flex, Grid, TextField } from "@aws-amplify/ui-react";
-import { fetchByPath, getOverrideProps, validateField } from "./utils";
+import { fetchByPath, getOverrideProps, validateField } from "../utils";
 import { generateClient } from "aws-amplify/api";
-import { getMedication } from "../graphql/queries";
-import { updateMedication } from "../graphql/mutations";
+import { getReport } from "../../graphql/queries";
+import { updateReport } from "../../graphql/mutations";
 const client = generateClient();
-export default function MedicationUpdateForm(props) {
+export default function ReportUpdateForm(props) {
   const {
     id: idProp,
-    medication: medicationModelProp,
+    report: reportModelProp,
     onSuccess,
     onError,
     onSubmit,
@@ -25,50 +25,55 @@ export default function MedicationUpdateForm(props) {
     ...rest
   } = props;
   const initialValues = {
-    medication_id: "",
-    name: "",
-    next_dose: "",
-    interval: "",
+    report_id: "",
+    date_created: "",
+    image_uri: "",
+    area: "",
+    user_comments: "",
   };
-  const [medication_id, setMedication_id] = React.useState(
-    initialValues.medication_id
+  const [report_id, setReport_id] = React.useState(initialValues.report_id);
+  const [date_created, setDate_created] = React.useState(
+    initialValues.date_created
   );
-  const [name, setName] = React.useState(initialValues.name);
-  const [next_dose, setNext_dose] = React.useState(initialValues.next_dose);
-  const [interval, setInterval] = React.useState(initialValues.interval);
+  const [image_uri, setImage_uri] = React.useState(initialValues.image_uri);
+  const [area, setArea] = React.useState(initialValues.area);
+  const [user_comments, setUser_comments] = React.useState(
+    initialValues.user_comments
+  );
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
-    const cleanValues = medicationRecord
-      ? { ...initialValues, ...medicationRecord }
+    const cleanValues = reportRecord
+      ? { ...initialValues, ...reportRecord }
       : initialValues;
-    setMedication_id(cleanValues.medication_id);
-    setName(cleanValues.name);
-    setNext_dose(cleanValues.next_dose);
-    setInterval(cleanValues.interval);
+    setReport_id(cleanValues.report_id);
+    setDate_created(cleanValues.date_created);
+    setImage_uri(cleanValues.image_uri);
+    setArea(cleanValues.area);
+    setUser_comments(cleanValues.user_comments);
     setErrors({});
   };
-  const [medicationRecord, setMedicationRecord] =
-    React.useState(medicationModelProp);
+  const [reportRecord, setReportRecord] = React.useState(reportModelProp);
   React.useEffect(() => {
     const queryData = async () => {
       const record = idProp
         ? (
             await client.graphql({
-              query: getMedication.replaceAll("__typename", ""),
+              query: getReport.replaceAll("__typename", ""),
               variables: { id: idProp },
             })
-          )?.data?.getMedication
-        : medicationModelProp;
-      setMedicationRecord(record);
+          )?.data?.getReport
+        : reportModelProp;
+      setReportRecord(record);
     };
     queryData();
-  }, [idProp, medicationModelProp]);
-  React.useEffect(resetStateValues, [medicationRecord]);
+  }, [idProp, reportModelProp]);
+  React.useEffect(resetStateValues, [reportRecord]);
   const validations = {
-    medication_id: [{ type: "Required" }],
-    name: [],
-    next_dose: [],
-    interval: [],
+    report_id: [{ type: "Required" }],
+    date_created: [],
+    image_uri: [],
+    area: [],
+    user_comments: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -113,10 +118,11 @@ export default function MedicationUpdateForm(props) {
       onSubmit={async (event) => {
         event.preventDefault();
         let modelFields = {
-          medication_id,
-          name: name ?? null,
-          next_dose: next_dose ?? null,
-          interval: interval ?? null,
+          report_id,
+          date_created: date_created ?? null,
+          image_uri: image_uri ?? null,
+          area: area ?? null,
+          user_comments: user_comments ?? null,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -147,10 +153,10 @@ export default function MedicationUpdateForm(props) {
             }
           });
           await client.graphql({
-            query: updateMedication.replaceAll("__typename", ""),
+            query: updateReport.replaceAll("__typename", ""),
             variables: {
               input: {
-                id: medicationRecord.id,
+                id: reportRecord.id,
                 ...modelFields,
               },
             },
@@ -165,122 +171,150 @@ export default function MedicationUpdateForm(props) {
           }
         }
       }}
-      {...getOverrideProps(overrides, "MedicationUpdateForm")}
+      {...getOverrideProps(overrides, "ReportUpdateForm")}
       {...rest}
     >
       <TextField
-        label="Medication id"
+        label="Report id"
         isRequired={true}
         isReadOnly={false}
-        value={medication_id}
+        value={report_id}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              medication_id: value,
-              name,
-              next_dose,
-              interval,
+              report_id: value,
+              date_created,
+              image_uri,
+              area,
+              user_comments,
             };
             const result = onChange(modelFields);
-            value = result?.medication_id ?? value;
+            value = result?.report_id ?? value;
           }
-          if (errors.medication_id?.hasError) {
-            runValidationTasks("medication_id", value);
+          if (errors.report_id?.hasError) {
+            runValidationTasks("report_id", value);
           }
-          setMedication_id(value);
+          setReport_id(value);
         }}
-        onBlur={() => runValidationTasks("medication_id", medication_id)}
-        errorMessage={errors.medication_id?.errorMessage}
-        hasError={errors.medication_id?.hasError}
-        {...getOverrideProps(overrides, "medication_id")}
+        onBlur={() => runValidationTasks("report_id", report_id)}
+        errorMessage={errors.report_id?.errorMessage}
+        hasError={errors.report_id?.hasError}
+        {...getOverrideProps(overrides, "report_id")}
       ></TextField>
       <TextField
-        label="Name"
-        isRequired={false}
-        isReadOnly={false}
-        value={name}
-        onChange={(e) => {
-          let { value } = e.target;
-          if (onChange) {
-            const modelFields = {
-              medication_id,
-              name: value,
-              next_dose,
-              interval,
-            };
-            const result = onChange(modelFields);
-            value = result?.name ?? value;
-          }
-          if (errors.name?.hasError) {
-            runValidationTasks("name", value);
-          }
-          setName(value);
-        }}
-        onBlur={() => runValidationTasks("name", name)}
-        errorMessage={errors.name?.errorMessage}
-        hasError={errors.name?.hasError}
-        {...getOverrideProps(overrides, "name")}
-      ></TextField>
-      <TextField
-        label="Next dose"
+        label="Date created"
         isRequired={false}
         isReadOnly={false}
         type="datetime-local"
-        value={next_dose && convertToLocal(new Date(next_dose))}
+        value={date_created && convertToLocal(new Date(date_created))}
         onChange={(e) => {
           let value =
             e.target.value === "" ? "" : new Date(e.target.value).toISOString();
           if (onChange) {
             const modelFields = {
-              medication_id,
-              name,
-              next_dose: value,
-              interval,
+              report_id,
+              date_created: value,
+              image_uri,
+              area,
+              user_comments,
             };
             const result = onChange(modelFields);
-            value = result?.next_dose ?? value;
+            value = result?.date_created ?? value;
           }
-          if (errors.next_dose?.hasError) {
-            runValidationTasks("next_dose", value);
+          if (errors.date_created?.hasError) {
+            runValidationTasks("date_created", value);
           }
-          setNext_dose(value);
+          setDate_created(value);
         }}
-        onBlur={() => runValidationTasks("next_dose", next_dose)}
-        errorMessage={errors.next_dose?.errorMessage}
-        hasError={errors.next_dose?.hasError}
-        {...getOverrideProps(overrides, "next_dose")}
+        onBlur={() => runValidationTasks("date_created", date_created)}
+        errorMessage={errors.date_created?.errorMessage}
+        hasError={errors.date_created?.hasError}
+        {...getOverrideProps(overrides, "date_created")}
       ></TextField>
       <TextField
-        label="Interval"
+        label="Image uri"
         isRequired={false}
         isReadOnly={false}
-        type="number"
-        step="any"
-        value={interval}
+        value={image_uri}
         onChange={(e) => {
-          let value = isNaN(parseInt(e.target.value))
-            ? e.target.value
-            : parseInt(e.target.value);
+          let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              medication_id,
-              name,
-              next_dose,
-              interval: value,
+              report_id,
+              date_created,
+              image_uri: value,
+              area,
+              user_comments,
             };
             const result = onChange(modelFields);
-            value = result?.interval ?? value;
+            value = result?.image_uri ?? value;
           }
-          if (errors.interval?.hasError) {
-            runValidationTasks("interval", value);
+          if (errors.image_uri?.hasError) {
+            runValidationTasks("image_uri", value);
           }
-          setInterval(value);
+          setImage_uri(value);
         }}
-        onBlur={() => runValidationTasks("interval", interval)}
-        errorMessage={errors.interval?.errorMessage}
-        hasError={errors.interval?.hasError}
-        {...getOverrideProps(overrides, "interval")}
+        onBlur={() => runValidationTasks("image_uri", image_uri)}
+        errorMessage={errors.image_uri?.errorMessage}
+        hasError={errors.image_uri?.hasError}
+        {...getOverrideProps(overrides, "image_uri")}
+      ></TextField>
+      <TextField
+        label="Area"
+        isRequired={false}
+        isReadOnly={false}
+        value={area}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              report_id,
+              date_created,
+              image_uri,
+              area: value,
+              user_comments,
+            };
+            const result = onChange(modelFields);
+            value = result?.area ?? value;
+          }
+          if (errors.area?.hasError) {
+            runValidationTasks("area", value);
+          }
+          setArea(value);
+        }}
+        onBlur={() => runValidationTasks("area", area)}
+        errorMessage={errors.area?.errorMessage}
+        hasError={errors.area?.hasError}
+        {...getOverrideProps(overrides, "area")}
+      ></TextField>
+      <TextField
+        label="User comments"
+        isRequired={false}
+        isReadOnly={false}
+        value={user_comments}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              report_id,
+              date_created,
+              image_uri,
+              area,
+              user_comments: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.user_comments ?? value;
+          }
+          if (errors.user_comments?.hasError) {
+            runValidationTasks("user_comments", value);
+          }
+          setUser_comments(value);
+        }}
+        onBlur={() => runValidationTasks("user_comments", user_comments)}
+        errorMessage={errors.user_comments?.errorMessage}
+        hasError={errors.user_comments?.hasError}
+        {...getOverrideProps(overrides, "user_comments")}
       ></TextField>
       <Flex
         justifyContent="space-between"
@@ -293,7 +327,7 @@ export default function MedicationUpdateForm(props) {
             event.preventDefault();
             resetStateValues();
           }}
-          isDisabled={!(idProp || medicationModelProp)}
+          isDisabled={!(idProp || reportModelProp)}
           {...getOverrideProps(overrides, "ResetButton")}
         ></Button>
         <Flex
@@ -305,7 +339,7 @@ export default function MedicationUpdateForm(props) {
             type="submit"
             variation="primary"
             isDisabled={
-              !(idProp || medicationModelProp) ||
+              !(idProp || reportModelProp) ||
               Object.values(errors).some((e) => e?.hasError)
             }
             {...getOverrideProps(overrides, "SubmitButton")}

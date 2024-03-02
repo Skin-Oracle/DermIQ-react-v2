@@ -7,13 +7,15 @@
 /* eslint-disable */
 import * as React from "react";
 import { Button, Flex, Grid, TextField } from "@aws-amplify/ui-react";
-import { fetchByPath, getOverrideProps, validateField } from "./utils";
+import { fetchByPath, getOverrideProps, validateField } from "../utils";
 import { generateClient } from "aws-amplify/api";
-import { createEntry } from "../graphql/mutations";
+import { getEntry } from "../../graphql/queries";
+import { updateEntry } from "../../graphql/mutations";
 const client = generateClient();
-export default function EntryCreateForm(props) {
+export default function EntryUpdateForm(props) {
   const {
-    clearOnSuccess = true,
+    id: idProp,
+    entry: entryModelProp,
     onSuccess,
     onError,
     onSubmit,
@@ -32,11 +34,30 @@ export default function EntryCreateForm(props) {
   const [entry_name, setEntry_name] = React.useState(initialValues.entry_name);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
-    setEntry_id(initialValues.entry_id);
-    setBody_part(initialValues.body_part);
-    setEntry_name(initialValues.entry_name);
+    const cleanValues = entryRecord
+      ? { ...initialValues, ...entryRecord }
+      : initialValues;
+    setEntry_id(cleanValues.entry_id);
+    setBody_part(cleanValues.body_part);
+    setEntry_name(cleanValues.entry_name);
     setErrors({});
   };
+  const [entryRecord, setEntryRecord] = React.useState(entryModelProp);
+  React.useEffect(() => {
+    const queryData = async () => {
+      const record = idProp
+        ? (
+            await client.graphql({
+              query: getEntry.replaceAll("__typename", ""),
+              variables: { id: idProp },
+            })
+          )?.data?.getEntry
+        : entryModelProp;
+      setEntryRecord(record);
+    };
+    queryData();
+  }, [idProp, entryModelProp]);
+  React.useEffect(resetStateValues, [entryRecord]);
   const validations = {
     entry_id: [{ type: "Required" }],
     body_part: [],
@@ -69,8 +90,8 @@ export default function EntryCreateForm(props) {
         event.preventDefault();
         let modelFields = {
           entry_id,
-          body_part,
-          entry_name,
+          body_part: body_part ?? null,
+          entry_name: entry_name ?? null,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -101,18 +122,16 @@ export default function EntryCreateForm(props) {
             }
           });
           await client.graphql({
-            query: createEntry.replaceAll("__typename", ""),
+            query: updateEntry.replaceAll("__typename", ""),
             variables: {
               input: {
+                id: entryRecord.id,
                 ...modelFields,
               },
             },
           });
           if (onSuccess) {
             onSuccess(modelFields);
-          }
-          if (clearOnSuccess) {
-            resetStateValues();
           }
         } catch (err) {
           if (onError) {
@@ -121,7 +140,7 @@ export default function EntryCreateForm(props) {
           }
         }
       }}
-      {...getOverrideProps(overrides, "EntryCreateForm")}
+      {...getOverrideProps(overrides, "EntryUpdateForm")}
       {...rest}
     >
       <TextField
@@ -207,13 +226,14 @@ export default function EntryCreateForm(props) {
         {...getOverrideProps(overrides, "CTAFlex")}
       >
         <Button
-          children="Clear"
+          children="Reset"
           type="reset"
           onClick={(event) => {
             event.preventDefault();
             resetStateValues();
           }}
-          {...getOverrideProps(overrides, "ClearButton")}
+          isDisabled={!(idProp || entryModelProp)}
+          {...getOverrideProps(overrides, "ResetButton")}
         ></Button>
         <Flex
           gap="15px"
@@ -223,7 +243,10 @@ export default function EntryCreateForm(props) {
             children="Submit"
             type="submit"
             variation="primary"
-            isDisabled={Object.values(errors).some((e) => e?.hasError)}
+            isDisabled={
+              !(idProp || entryModelProp) ||
+              Object.values(errors).some((e) => e?.hasError)
+            }
             {...getOverrideProps(overrides, "SubmitButton")}
           ></Button>
         </Flex>

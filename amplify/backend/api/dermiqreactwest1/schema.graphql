@@ -8,22 +8,19 @@ type Report @model @auth(rules: [{allow: public}]) {
   area: Float
   usercomments: String
   nlpresponse: String
-  entryID: ID! @index(name: "byEntry")
+  entry_id: String
 }
 
 type User @model @auth(rules: [{allow: public}]) {
   id: ID!
-  Entries: [Entry] @hasMany(indexName: "byUser", fields: ["id"])
 }
 
 type Entry @model @auth(rules: [{allow: public}]) {
   id: ID!
   body_part: String
   entry_name: String
-  medications: [Medication] @hasMany(indexName: "byEntry", fields: ["id"])
   diagnosis: String
-  userID: ID! @index(name: "byUser")
-  Reports: [Report] @hasMany(indexName: "byEntry", fields: ["id"])
+  user_id: ID
 }
 
 type Medication @model @auth(rules: [{allow: public}]) {
@@ -31,5 +28,5 @@ type Medication @model @auth(rules: [{allow: public}]) {
   name: String
   next_dose: AWSDateTime
   interval: Int
-  entryID: ID! @index(name: "byEntry")
+  entry_id: ID
 }
