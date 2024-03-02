@@ -18,7 +18,7 @@ export const createReport = /* GraphQL */ `mutation CreateReport(
     area
     usercomments
     nlpresponse
-    entryID
+    entry_id
     createdAt
     updatedAt
     __typename
@@ -38,7 +38,7 @@ export const updateReport = /* GraphQL */ `mutation UpdateReport(
     area
     usercomments
     nlpresponse
-    entryID
+    entry_id
     createdAt
     updatedAt
     __typename
@@ -58,7 +58,7 @@ export const deleteReport = /* GraphQL */ `mutation DeleteReport(
     area
     usercomments
     nlpresponse
-    entryID
+    entry_id
     createdAt
     updatedAt
     __typename
@@ -74,10 +74,6 @@ export const createUser = /* GraphQL */ `mutation CreateUser(
 ) {
   createUser(input: $input, condition: $condition) {
     id
-    Entries {
-      nextToken
-      __typename
-    }
     createdAt
     updatedAt
     __typename
@@ -93,10 +89,6 @@ export const updateUser = /* GraphQL */ `mutation UpdateUser(
 ) {
   updateUser(input: $input, condition: $condition) {
     id
-    Entries {
-      nextToken
-      __typename
-    }
     createdAt
     updatedAt
     __typename
@@ -112,10 +104,6 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
 ) {
   deleteUser(input: $input, condition: $condition) {
     id
-    Entries {
-      nextToken
-      __typename
-    }
     createdAt
     updatedAt
     __typename
@@ -133,16 +121,8 @@ export const createEntry = /* GraphQL */ `mutation CreateEntry(
     id
     body_part
     entry_name
-    medications {
-      nextToken
-      __typename
-    }
     diagnosis
-    userID
-    Reports {
-      nextToken
-      __typename
-    }
+    user_id
     createdAt
     updatedAt
     __typename
@@ -160,16 +140,8 @@ export const updateEntry = /* GraphQL */ `mutation UpdateEntry(
     id
     body_part
     entry_name
-    medications {
-      nextToken
-      __typename
-    }
     diagnosis
-    userID
-    Reports {
-      nextToken
-      __typename
-    }
+    user_id
     createdAt
     updatedAt
     __typename
@@ -187,16 +159,8 @@ export const deleteEntry = /* GraphQL */ `mutation DeleteEntry(
     id
     body_part
     entry_name
-    medications {
-      nextToken
-      __typename
-    }
     diagnosis
-    userID
-    Reports {
-      nextToken
-      __typename
-    }
+    user_id
     createdAt
     updatedAt
     __typename
@@ -215,7 +179,7 @@ export const createMedication = /* GraphQL */ `mutation CreateMedication(
     name
     next_dose
     interval
-    entryID
+    entry_id
     createdAt
     updatedAt
     __typename
@@ -234,7 +198,7 @@ export const updateMedication = /* GraphQL */ `mutation UpdateMedication(
     name
     next_dose
     interval
-    entryID
+    entry_id
     createdAt
     updatedAt
     __typename
@@ -253,7 +217,7 @@ export const deleteMedication = /* GraphQL */ `mutation DeleteMedication(
     name
     next_dose
     interval
-    entryID
+    entry_id
     createdAt
     updatedAt
     __typename
