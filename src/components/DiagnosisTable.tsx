@@ -12,9 +12,25 @@ import {
 } from "@mui/material";
 import { DiagnosisTableRow } from '../components/DiagnosisTableRow';
 import { useEntries } from "../contexts/EntriesProvider";
+import { useReports } from "../contexts/ReportsProvider";
+import { useEffect } from "react";
 
 export const DiagnosisTable = () => {
   const { entries } = useEntries();
+
+  const { fetchReports, reports } = useReports(); // Assuming fetchReportForEntry is a function that handles fetching reports for a particular entryId
+
+  useEffect(() => {
+    // Here we assume that fetchReportForEntry function exists and is responsible for
+    // fetching the reports for a given entry ID and updating the context or state with the results.
+    entries.forEach((entry) => {
+      // Check to prevent over-fetching if the reports for the entry are already in the state/context.
+      if (!reports || !reports[entry.id]) {
+        fetchReports(entry.id);
+      }
+    });
+  }, [entries, fetchReports, reports]);
+
   return (
     <TableContainer>
       <Table>

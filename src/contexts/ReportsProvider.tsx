@@ -5,13 +5,16 @@ const client = generateClient();
 import { listReports } from '../graphql/queries';
 import { deleteReport, createReport } from '../graphql/mutations';
 
+interface ReportType{
+    [entryID: string]: APITypes.Report[]
+}
 // Define the type for our reports context state
 interface ReportsContextState {
-  reports: APITypes.Report[] | undefined;
+  reports: ReportType | undefined;
   isReportsLoading: boolean;
   fetchReports:(entryID: string) =>Promise<void>;
   createNewReport:(input: APITypes.CreateReportInput) => Promise<void>;
-  deleteExistingReport:(input: APITypes.DeleteReportInput) => Promise<void>;
+  deleteExistingReport:(entryId: string, input: APITypes.DeleteReportInput) => Promise<void>;
 }
 
 // Create the context
@@ -19,7 +22,7 @@ const ReportsContext = createContext<ReportsContextState | undefined>(undefined)
 
 
 export const ReportsProvider = (props: { children: React.ReactNode }) => {
-  const [reports, setReports] = useState<APITypes.Report[]>([]);
+  const [reports, setReports] = useState<ReportType>({});
   const [isReportsLoading, setIsReportsLoading] = useState<boolean>(true);
 
   const fetchReports = useCallback(async (entryID: string) => {
@@ -38,7 +41,10 @@ export const ReportsProvider = (props: { children: React.ReactNode }) => {
       }));
 
       if (response.data.listReports.items){
-        setReports(response.data.listReports.items)
+        setReports((prevReports) => ({
+            ...prevReports, // Copy all existing report key-value pairs
+            [entryID]: response.data.listReports.items, // Add new or update existing key with the new reports array
+        }));
       }
     } catch (e) {
       console.error("Failed to fetch Reports" + e);
@@ -56,18 +62,28 @@ export const ReportsProvider = (props: { children: React.ReactNode }) => {
       });
   
       // Check if the mutation was successful
-      if (response.data?.createReport) {
-        reports.push(response.data.createReport)
-      } else {
-        console.error('Failed to create entry:', response.errors);
-      }
+      if (response.data?.createReport && input.entry_id) {
+        const newReport = response.data.createReport;
+        const entryId = input.entry_id;
+
+        setReports((prevReports) => {
+            const updatedReports = prevReports[entryId]
+                ? [...prevReports[entryId], newReport]
+                : [newReport];
+            
+            return {
+                ...prevReports,
+                [entryId]: updatedReports,
+            };
+        });
+    }
     } catch (error) {
       console.error('Error creating entry:', error);
       throw error; // Rethrow the error to be handled by the caller, if necessary
     }
-  },[reports]);
+  },[]);
 
-  const deleteExistingReport = useCallback(async(input:APITypes.DeleteReportInput) => {
+  const deleteExistingReport = useCallback(async(entryId: string, input:APITypes.DeleteReportInput) => {
     try {
       const response = await client.graphql({
         query: deleteReport,
@@ -78,8 +94,23 @@ export const ReportsProvider = (props: { children: React.ReactNode }) => {
   
       // Check if the mutation was successful
       if (response.data?.deleteReport) {
-        setReports(prevReports => prevReports.filter(entry => entry.id !== response.data.deleteReport.id));
-      } else {
+        setReports(prevReports => {
+        // Make a shallow copy of the previous reports
+        const updatedReports = {...prevReports};
+
+        // Filter out the report that matches input.id
+        const filteredReports = updatedReports[entryId].filter(report => report.id !== input.id);
+
+        // Update the entryId key with the filtered array, or delete it if empty
+        if (filteredReports.length > 0) {
+          updatedReports[entryId] = filteredReports;
+        } else {
+          // If array is empty after removal, delete the key from the dictionary
+          delete updatedReports[entryId];
+        }
+
+        return updatedReports;
+      })} else {
         console.error('Failed to delete entry:', response.errors);
       }
     } catch (error) {
