@@ -4,10 +4,8 @@ import { generateClient } from "aws-amplify/api";
 const client = generateClient();
 import { listReports } from '../graphql/queries';
 import { deleteReport, createReport } from '../graphql/mutations';
+import { ReportType } from '../utils/Types';
 
-interface ReportType{
-    [entryID: string]: APITypes.Report[]
-}
 // Define the type for our reports context state
 interface ReportsContextState {
   reports: ReportType | undefined;

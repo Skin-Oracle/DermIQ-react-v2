@@ -5,6 +5,7 @@ import { UsersProvider } from './contexts/UsersProvider';
 import { EntriesProvider } from './contexts/EntriesProvider';
 import { MedicationsProvider } from './contexts/MedicationsProvider';
 import { ReportsProvider } from './contexts/ReportsProvider';
+import ReportPage from './pages/ReportPage';
 
 export function App({ signOut, user }: WithAuthenticatorProps) {
 
@@ -16,6 +17,7 @@ export function App({ signOut, user }: WithAuthenticatorProps) {
           <MedicationsProvider>
             <ReportsProvider>
               <HomePage signOut={signOut} user={user} />
+              <ReportPage entryID = "123123" entryName = "123123"/>
             </ReportsProvider>
           </MedicationsProvider>
         </EntriesProvider>
