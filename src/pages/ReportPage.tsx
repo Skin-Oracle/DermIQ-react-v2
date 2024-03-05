@@ -26,7 +26,6 @@ const ReportPage = () => {
     const [userComments, setUserComments] = useState<string>("");
     const [isFunctionRunning, setIsFunctionRunning] = useState<boolean>(false)
     const imageURLPath = "https://finaldermiqbucket182827-dev.s3.us-west-1.amazonaws.com/public/";
-    const OPENAI_API_KEY='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'
 
     const [isModalOpen, setIsModalOpen]  = useState<boolean>(false);
     
