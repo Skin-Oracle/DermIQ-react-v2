@@ -4,10 +4,7 @@ import { generateClient } from "aws-amplify/api";
 const client = generateClient();
 import { listReports } from '../graphql/queries';
 import { deleteReport, createReport } from '../graphql/mutations';
-
-interface ReportType{
-    [entryID: string]: APITypes.Report[]
-}
+import { ReportType } from '../utils/Types';
 // Define the type for our reports context state
 interface ReportsContextState {
   reports: ReportType | undefined;
@@ -40,6 +37,8 @@ export const ReportsProvider = (props: { children: React.ReactNode }) => {
         }
       }));
 
+      console.log(response.data.listReports.items)
+
       if (response.data.listReports.items){
         setReports((prevReports) => ({
             ...prevReports, // Copy all existing report key-value pairs
@@ -64,18 +63,19 @@ export const ReportsProvider = (props: { children: React.ReactNode }) => {
       // Check if the mutation was successful
       if (response.data?.createReport && input.entry_id) {
         const newReport = response.data.createReport;
+        console.log(newReport)
         const entryId = input.entry_id;
 
         setReports((prevReports) => {
-            const updatedReports = prevReports[entryId]
-                ? [...prevReports[entryId], newReport]
-                : [newReport];
-            
-            return {
-                ...prevReports,
-                [entryId]: updatedReports,
-            };
-        });
+          // Updated to ensure it is an array before spreading
+          const existingReports = Array.isArray(prevReports[entryId]) ? prevReports[entryId] : [];
+          const updatedReports = [...existingReports, newReport];
+      
+          return {
+              ...prevReports,
+              [entryId]: updatedReports,
+          };
+      });
     }
     } catch (error) {
       console.error('Error creating entry:', error);

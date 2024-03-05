@@ -10,7 +10,7 @@ import { deleteEntry, createEntry } from '../graphql/mutations';
 interface EntriesContextState {
   entries: APITypes.Entry[];
   isEntriesLoading: boolean;
-  fetchEntries:() =>Promise<void>;
+  fetchEntries:(userID: string) =>Promise<void>;
   createNewEntry:(input: APITypes.CreateEntryInput) => Promise<void>;
   deleteExistingEntry:(input: APITypes.DeleteEntryInput) => Promise<void>;
 }
@@ -24,7 +24,7 @@ export const EntriesProvider = (props: { children: React.ReactNode }) => {
   const [entries, setEntries] = useState<APITypes.Entry[]>([]);
   const [isEntriesLoading, setIsEntriesLoading] = useState<boolean>(true);
 
-  const fetchEntries = useCallback(async () => {
+  const fetchEntries = useCallback(async (userID:string) => {
     try {
       setIsEntriesLoading(true);
       // Cast the response to the expected GraphQLResult type
@@ -32,13 +32,12 @@ export const EntriesProvider = (props: { children: React.ReactNode }) => {
         query: listEntries,
         variables:{
           filter: {
-            id: {
-              eq: users?.id // This line specifies the filter condition
+            user_id: {
+              eq: userID // This line specifies the filter condition
             }
           }
         }
       }));
-
       if (response.data.listEntries.items){
         setEntries(response.data.listEntries.items)
       }
@@ -47,7 +46,7 @@ export const EntriesProvider = (props: { children: React.ReactNode }) => {
     } finally {
       setIsEntriesLoading(false);
     }
-  },[users?.id]);
+  },[]);
   const createNewEntry = useCallback(async(input:APITypes.CreateEntryInput) => {
     try {
       const response = await client.graphql({

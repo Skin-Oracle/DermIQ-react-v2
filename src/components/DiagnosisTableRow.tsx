@@ -1,22 +1,20 @@
 
 import {
-    Box,
     Button,
-    Table,
-    TableBody,
+    IconButton,
     TableCell,
-    TableContainer,
-    TableHead,
     TableRow,
     Typography,
   } from "@mui/material";
-
+  import DeleteIcon from '@mui/icons-material/Delete';
+  import { useNavigate } from "react-router-dom";
+  import { useEntries } from "../contexts/EntriesProvider";
 interface Props {
-    entryID?: string;
+    entryID: string;
     entryName?: string | null;
     diagnosis?: string | null;
     bodyPart?: string | null;
-
+    createdAt?: string | null;
 }
 
 export const DiagnosisTableRow = ({
@@ -24,7 +22,10 @@ export const DiagnosisTableRow = ({
     entryName,
     diagnosis,
     bodyPart,
+    createdAt,
 }: Props) => {
+    const navigate = useNavigate();
+    const { deleteExistingEntry} = useEntries();
     return (
         <TableRow
         sx={{
@@ -53,28 +54,38 @@ export const DiagnosisTableRow = ({
         </TableCell>
         <TableCell sx={{ width: "20%" }}>
             <Typography>
-                Button?
+                {diagnosis}
             </Typography>
         </TableCell>
         <TableCell sx={{ width: "15%" }}>
             <Typography>
-                Button?
+                {bodyPart}
             </Typography>
         </TableCell>
         <TableCell sx={{ width: "15%" }}>
             <Typography>
-                Button?
+                {createdAt}
             </Typography>
         </TableCell>
         <TableCell sx={{ width: "10%" }}>
             <Typography>
-                Button?
+                <Button
+                variant="contained"
+                onClick={()=>{if(entryID){
+                    console.log(diagnosis)
+                    navigate(`reports/${entryID}`, { state: { diagnosis } });
+            }    
+                }}
+                >
+                    View Report
+                </Button>
             </Typography>
         </TableCell>
         <TableCell align="right" sx={{ width: "5%" }}>
-            <Typography>
-                Button?
-            </Typography>
+            <IconButton
+            onClick={() =>{deleteExistingEntry({id: entryID})}}>
+                <DeleteIcon sx={{ fontSize: "18px" }} />
+            </IconButton>
         </TableCell>
       </TableRow>
     );

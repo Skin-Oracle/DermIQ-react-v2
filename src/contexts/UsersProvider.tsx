@@ -33,6 +33,7 @@ export const UsersProvider = (props: { children: React.ReactNode }) => {
           }  else {
             // Handle null response data if necessary
             const newUser = await createNewUser({id:userID})
+            console.log(newUser)
             if (newUser) {
                 setUsers(newUser);
             } else {

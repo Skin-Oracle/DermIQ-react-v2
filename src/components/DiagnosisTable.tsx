@@ -15,7 +15,11 @@ import { useEntries } from "../contexts/EntriesProvider";
 import { useReports } from "../contexts/ReportsProvider";
 import { useEffect } from "react";
 
-export const DiagnosisTable = () => {
+interface Props {
+  handleOpenModal: () => void;
+}
+
+export const DiagnosisTable = ({handleOpenModal}:Props) => {
   const { entries } = useEntries();
 
   const { fetchReports, reports } = useReports(); // Assuming fetchReportForEntry is a function that handles fetching reports for a particular entryId
@@ -56,7 +60,7 @@ export const DiagnosisTable = () => {
           {entries.length !==0 ? (
             entries
             .map((entry) => {
-              const { id, body_part, entry_name, diagnosis } = entry;
+              const { id, body_part, entry_name, diagnosis, createdAt } = entry;
               return (
                 <DiagnosisTableRow
                   key={id}
@@ -64,6 +68,7 @@ export const DiagnosisTable = () => {
                   entryName={entry_name}
                   diagnosis={diagnosis}
                   bodyPart={body_part}
+                  createdAt={createdAt.split('T')[0]}
                 />
               );
             })):(
@@ -95,7 +100,7 @@ export const DiagnosisTable = () => {
                   </Typography>
                   <Button
                     variant="contained"
-                    // onClick={() => navigate("/datasources/create")}
+                    onClick={handleOpenModal}
                   >
                     New Diagnosis
                   </Button>

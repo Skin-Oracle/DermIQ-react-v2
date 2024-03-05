@@ -17,8 +17,16 @@
     "@mui/icons-material": "^5.15.11",
     "@mui/material": "^5.15.11",
     "aws-amplify": "^6.0.12",
+    "axios": "^1.6.7",
+    "dotenv": "^16.4.5",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^2.5.1",
+    "openai": "^4.28.4",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-dropzone": "^14.2.3",
+    "react-router-dom": "^6.22.2",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",
