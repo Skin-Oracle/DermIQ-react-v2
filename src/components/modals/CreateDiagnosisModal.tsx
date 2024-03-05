@@ -1,4 +1,4 @@
-import { Box, Button, Modal, TextField, Typography } from "@mui/material"
+import { Box, Button, Modal, TextField, ThemeProvider, Typography, createTheme } from "@mui/material"
 import PhotoUploadComponent from "../PhotoUploadComponent";
 import { useState } from "react";
 
@@ -12,12 +12,22 @@ interface Props{
     isFunctionRunning: boolean;
 }
 export const CreateDiagnosisModal = ({open, onClose, handleImageUpload, handleCreateEntry, handleSetBodyPart, handleSetEntryName, isFunctionRunning}: Props) => {
-
+    const theme = createTheme({
+        typography: {
+          fontFamily: [
+            'DM Sans',
+          ].join(','),
+        },
+      });
     const [entryName, setEntryName] = useState('');
-  const [bodyPart, setBodyPart] = useState('');
+    const [bodyPart, setBodyPart] = useState('');
+    const [isPhotoUploaded, setIsPhotoUploaded] = useState(false);
+    const isConfirmDisabled = !entryName || !bodyPart || !isPhotoUploaded; // Confirms is disabled if any of the fields is empty
 
-  const isConfirmDisabled = !entryName || !bodyPart; // Confirms is disabled if any of the fields is empty
-
+    const handleImageUploadWrapper = (file: File) => {
+        handleImageUpload(file);
+        setIsPhotoUploaded(true); // Set to true once a photo is uploaded
+    };
   const handleEntryNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const name = event.target.value;
     setEntryName(name);
@@ -32,7 +42,7 @@ export const CreateDiagnosisModal = ({open, onClose, handleImageUpload, handleCr
 
 
     return(
-        <>
+        <ThemeProvider theme={theme}>
             <Modal
                 open={open}
                 onClose={onClose}
@@ -65,12 +75,22 @@ export const CreateDiagnosisModal = ({open, onClose, handleImageUpload, handleCr
                             overflowY: "auto",
                             }}
                         >
-                            <Typography>Add Diagnosis</Typography>
+                            <Typography sx={{fontFamily:"DM Sans", fontSize: "25px", color: "#404040", fontWeight: 800 }}>
+                                Add Diagnosis
+                            </Typography>
                             <TextField
                             required
                             label="Name"
                             value={entryName}
                             onChange={handleEntryNameChange}
+                            sx={{
+                                '& .MuiInputBase-input': {
+                                  fontFamily: 'DM Sans', // For the text the user inputs
+                                },
+                                '& .MuiInputLabel-root': { // Target the label
+                                  fontFamily: 'DM Sans', // Set the font family for the label
+                                }
+                              }}
                             />
                             <TextField
                             required
@@ -79,7 +99,7 @@ export const CreateDiagnosisModal = ({open, onClose, handleImageUpload, handleCr
                             onChange={handleBodyPartChange}
                             />
                             <PhotoUploadComponent
-                                handleImageUpload={handleImageUpload}
+                                handleImageUpload={handleImageUploadWrapper}
                              />
 
                             <Box sx={{ display: "flex", justifyContent: "center", mt: "10px", gap: "20px" }}>
@@ -98,6 +118,6 @@ export const CreateDiagnosisModal = ({open, onClose, handleImageUpload, handleCr
                     </Box>
                 </>
             </Modal>
-        </>
+        </ThemeProvider>
     )
 }

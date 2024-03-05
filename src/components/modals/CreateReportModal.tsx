@@ -1,4 +1,4 @@
-import { Box, Button, Modal, TextField, Typography } from "@mui/material"
+import { Box, Button, Modal, TextField, ThemeProvider, Typography, createTheme } from "@mui/material"
 import PhotoUploadComponent from "../PhotoUploadComponent";
 import { useState } from "react";
 
@@ -28,8 +28,15 @@ export const CreateReportModal = ({open, onClose, handleImageUpload, handleCreat
   }
 
 
+  const theme = createTheme({
+    typography: {
+      fontFamily: [
+        'DM Sans',
+      ].join(','),
+    },
+  });
     return(
-        <>
+        <ThemeProvider theme={theme}>
             <Modal
                 open={open}
                 onClose={onClose}
@@ -62,7 +69,7 @@ export const CreateReportModal = ({open, onClose, handleImageUpload, handleCreat
                             overflowY: "auto",
                             }}
                         >
-                            <Typography>Add Report Entry</Typography>
+                            <Typography sx={{fontFamily:"DM Sans", fontSize: "25px", color: "#404040", fontWeight: 800 }}>Add Report Entry</Typography>
                             <PhotoUploadComponent
                                 handleImageUpload={handleImageUpload}
                              />
@@ -89,6 +96,6 @@ export const CreateReportModal = ({open, onClose, handleImageUpload, handleCreat
                     </Box>
                 </>
             </Modal>
-        </>
+        </ThemeProvider>
     )
 }

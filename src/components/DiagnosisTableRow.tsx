@@ -38,31 +38,23 @@ export const DiagnosisTableRow = ({
         }}
       >
         <TableCell
-          colSpan={2}
-          sx={{
-            width: "35%",
-            fontSize: "0.875rem",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            whiteSpace: "nowrap",
-            maxWidth: 500,
-          }}
+          sx={{width: "20%"}}
         >
             <Typography>
                 {entryName}
             </Typography>
         </TableCell>
-        <TableCell sx={{ width: "20%" }}>
+        <TableCell sx={{ width: "25%" }}>
             <Typography>
                 {diagnosis}
             </Typography>
         </TableCell>
-        <TableCell sx={{ width: "15%" }}>
+        <TableCell sx={{ width: "20%" }}>
             <Typography>
                 {bodyPart}
             </Typography>
         </TableCell>
-        <TableCell sx={{ width: "15%" }}>
+        <TableCell sx={{ width: "20%" }}>
             <Typography>
                 {createdAt}
             </Typography>

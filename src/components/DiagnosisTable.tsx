@@ -9,6 +9,7 @@ import {
   TableHead,
   TableRow,
   Typography,
+  createTheme,
 } from "@mui/material";
 import { DiagnosisTableRow } from '../components/DiagnosisTableRow';
 import { useEntries } from "../contexts/EntriesProvider";
@@ -33,24 +34,49 @@ export const DiagnosisTable = ({handleOpenModal}:Props) => {
     });
   }, [entries, fetchReports]);
 
+  const theme = createTheme({
+    typography: {
+      fontFamily: [
+        '-apple-system',
+        'BlinkMacSystemFont',
+        'DM Sans',
+        '"Segoe UI"',
+        'Roboto',
+        '"Helvetica Neue"',
+        'Arial',
+        'sans-serif',
+        '"Apple Color Emoji"',
+        '"Segoe UI Emoji"',
+        '"Segoe UI Symbol"',
+      ].join(','),
+    },
+  });
   return (
     <TableContainer>
       <Table>
         <TableHead>
           <TableRow sx={{ "& th": { p: "8px 16px" } }}>
-            <TableCell colSpan={2} sx={{ width: "20%" }}>
-              Name
+            <TableCell sx={{ width: "20%" }}>
+              <Typography sx={{fontFamily:"DM Sans", fontSize: "20px", color: "#404040", fontWeight: 600 }}>
+                Name
+              </Typography>
             </TableCell>
             <TableCell sx={{ width: "25%" }}>
-              Diagnosis
+              <Typography sx={{fontFamily:"DM Sans", fontSize: "20px", color: "#404040", fontWeight: 600 }}>
+                Diagnosis
+              </Typography>
             </TableCell>
-            <TableCell sx={{ width: "15%" }}>
-              Body Part
+            <TableCell sx={{ width: "20%" }}>
+              <Typography sx={{fontFamily:"DM Sans", fontSize: "20px", color: "#404040", fontWeight: 600 }}>
+                Body Part
+              </Typography>
             </TableCell>
-            <TableCell sx={{ width: "15%" }}>
-              Date Created
+            <TableCell sx={{ width: "20%" }}>
+              <Typography sx={{fontFamily:"DM Sans", fontSize: "20px", color: "#404040", fontWeight: 600 }}>
+                Date Created
+              </Typography>
             </TableCell>
-            <TableCell sx={{ width: "20%" }} />
+            <TableCell sx={{ width: "10%" }} />
             <TableCell sx={{ width: "5%" }} />
           </TableRow>
         </TableHead>
@@ -82,13 +108,14 @@ export const DiagnosisTable = ({handleOpenModal}:Props) => {
                     minHeight: 250,
                   }}
                 >
-                  <Typography sx={{ color: "#404040", fontSize: "1.25rem" }}>
+                  <Typography sx={{fontFamily:"DM Sans", fontSize: "20px", color: "#404040", fontWeight: 500 }}>
                     You do not have any entries
                   </Typography>
                   <Typography
                     sx={{
                       fontSize: "14px",
                       color: "#727272",
+                      fontFamily:"DM Sans",
                       maxWidth: "75%",
                       textAlign: "center",
                       mb: "10px",
@@ -99,6 +126,7 @@ export const DiagnosisTable = ({handleOpenModal}:Props) => {
                   <Button
                     variant="contained"
                     onClick={handleOpenModal}
+                    sx={{fontFamily:"DM Sans", fontSize: "15px", fontWeight: 600 }}
                   >
                     New Diagnosis
                   </Button>

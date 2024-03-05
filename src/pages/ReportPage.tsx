@@ -26,7 +26,7 @@ const ReportPage = () => {
     const [userComments, setUserComments] = useState<string>("");
     const [isFunctionRunning, setIsFunctionRunning] = useState<boolean>(false)
     const imageURLPath = "https://finaldermiqbucket182827-dev.s3.us-west-1.amazonaws.com/public/";
-    const OPENAI_API_KEY='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'
+    const OPENAI_API_KEY='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'
 
     const [isModalOpen, setIsModalOpen]  = useState<boolean>(false);
     
@@ -54,7 +54,7 @@ const ReportPage = () => {
       heightLeft -= pageHeight;
     }
     
-    doc.save('report.pdf');
+    doc.save(`${diagnosis}report.pdf`);
   };
 
   const handleGoHome = () => {
@@ -103,36 +103,6 @@ const ReportPage = () => {
       console.error('Error during image upload and get size:', error);
     }
   };
-
-//   async function generateReportText(disease:string, size:number, userComments: string) {
-//     const messages = [
-//         {
-//             role: "system",
-//             content: "This is a model trained on medical data. It can suggest the next steps of care based on a diagnosed disease and its size."
-//         },
-//         {
-//             role: "user",
-//             content: `The patient has been diagnosed with ${disease} with a size of ${size} mm^2. What should the next steps of care be? Answer in 2 sentences`
-//         }
-//     ];
-    
-//     const response = await axios.post(
-//         `https://api.openai.com/v1/chat/completions`,
-//         {
-//             model: "gpt-3.5-turbo",
-//             messages,
-//             temperature: 0.7
-//         },
-//         {
-//             headers: {
-//                 Authorization: `Bearer ${OPENAI_API_KEY}`,
-//                 'Content-Type': 'application/json',
-//             },
-//         },
-//     );
-    
-//     return response.data.choices[0].message['content'];
-// }
 
 
 const generateSummaryMessages = async (entryId:string, newDisease:string, newSize:number, newUserComments:string) => {

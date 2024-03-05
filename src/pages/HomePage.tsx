@@ -3,7 +3,7 @@ import '@aws-amplify/ui-react/styles.css';
 // import FileUploader from '../components/FileUploader';
 // import DermLogo from '../assets/DermLogo.png';
 import './HomePage.css';
-import {Button, Container, Box, Typography} from '@mui/material'
+import {Button, Container, Box, Typography, createTheme} from '@mui/material'
 import { DiagnosisTable } from '../components/DiagnosisTable';
 import { useUsersContext } from '../contexts/UsersProvider';
 import { useEffect, useState } from 'react';
@@ -15,9 +15,11 @@ import { uploadData } from 'aws-amplify/storage';
 import { v4 as uuidv4 } from 'uuid';
 import * as APITypes from "../API";
 import { useNavigate } from 'react-router-dom';
+import Logo from '../components/dermlogo.png';
+import { cardio } from 'ldrs'
 
 const HomePage = ({ signOut, user }: WithAuthenticatorProps) => {
-  const OPENAI_API_KEY='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'
+  const OPENAI_API_KEY='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'
 
   const {users, fetchOrCreateUser} = useUsersContext();
   const [isModalOpen, setIsModalOpen]  = useState<boolean>(false);
@@ -30,7 +32,7 @@ const HomePage = ({ signOut, user }: WithAuthenticatorProps) => {
   const { createNewReport} = useReports();
   const navigate = useNavigate();
   
-
+  cardio.register()
   const handleOpenModal = () => {
     setIsModalOpen(true);
   };
@@ -151,7 +153,7 @@ const HomePage = ({ signOut, user }: WithAuthenticatorProps) => {
     let nextSteps;
     if (diagnosis == 'Other'){
       size = -1;
-      nextSteps = "Please upload only images of skin conditions, as our DermIQQ cannot accurately evaluate pictures of random objects or non-skin-related issues."
+      nextSteps = "Please upload only images of skin conditions, as DermIQ cannot accurately evaluate pictures of random objects or non-skin-related issues."
     }
     else{
       size = await callGetSizeEndpoint();
@@ -196,15 +198,42 @@ const HomePage = ({ signOut, user }: WithAuthenticatorProps) => {
     }
   }, [user, fetchEntries]);
   
-
+  const theme = createTheme({
+    typography: {
+      fontFamily: [
+        '-apple-system',
+        'BlinkMacSystemFont',
+        'DM Sans',
+        '"Segoe UI"',
+        'Roboto',
+        '"Helvetica Neue"',
+        'Arial',
+        'sans-serif',
+        '"Apple Color Emoji"',
+        '"Segoe UI Emoji"',
+        '"Segoe UI Symbol"',
+      ].join(','),
+    },
+  });
   return (
     <>
     { entries ? (
       <>
+      <Box
+        sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        textAlign: "center",
+        width: "100%",
+        mb: "-75px",
+      }}
+        >
+      <img src={Logo} alt = "Derm IQ Logo" width="200"/>
+    </Box>
+    
       <Container
-        sx={{ width: "100%", py: "50px",
-        mx: "50px",
-        maxWidth:"1000px"}}
+        sx={{ width: "100%", py: "50px", mx: "auto", maxWidth:"1000px"}}
         disableGutters
       >
         <Box
@@ -213,17 +242,18 @@ const HomePage = ({ signOut, user }: WithAuthenticatorProps) => {
             justifyContent: "space-between",
             alignItems: "center",
             width: "100%",
-            mb: "30px",
+            mb: "15px",
           }}
         >
-          <Typography sx={{ fontSize: "1.5rem", color: "#404040", fontWeight: 600 }}>
-            Diagnoses
+          <Typography sx={{fontFamily:"DM Sans", fontSize: "35px", color: "#404040", fontWeight: 800 }}>
+            Diagnoses Chart
           </Typography>
 
           <Button
             variant="contained"
             onClick={handleOpenModal}
-          >
+            sx={{fontFamily:"DM Sans", fontSize: "17px", fontWeight: 600 }}
+          >          
             New Diagnosis
           </Button>
         </Box>
@@ -249,7 +279,22 @@ const HomePage = ({ signOut, user }: WithAuthenticatorProps) => {
       </Container>
     </>
     ):
-    (<Typography>Loading</Typography>)
+    (
+    // Default values shown
+    <Box sx={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      width: "100%",
+      height: "100vh",
+    }}>
+      <l-cardio
+        size="50"
+        stroke="4"
+        speed="2" 
+        color="black" 
+      ></l-cardio>
+    </Box>)
     }
       </>
   )
