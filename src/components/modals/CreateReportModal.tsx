@@ -22,6 +22,11 @@ export const CreateReportModal = ({open, onClose, handleImageUpload, handleCreat
     handleSetUserComments(name);
   };
 
+  const handleConfirm = () => {
+    handleCreateReport();
+    setUserComments("")
+  }
+
 
     return(
         <>
@@ -74,7 +79,7 @@ export const CreateReportModal = ({open, onClose, handleImageUpload, handleCreat
                                 </Button>
                                 <Button
                                 variant="contained"
-                                onClick={handleCreateReport}
+                                onClick={handleConfirm}
                                 disabled={isConfirmDisabled}
                                 >
                                     Confirm

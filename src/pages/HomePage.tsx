@@ -17,7 +17,7 @@ import * as APITypes from "../API";
 import { useNavigate } from 'react-router-dom';
 
 const HomePage = ({ signOut, user }: WithAuthenticatorProps) => {
-  const OPENAI_API_KEY='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'
+  const OPENAI_API_KEY='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'
 
   const {users, fetchOrCreateUser} = useUsersContext();
   const [isModalOpen, setIsModalOpen]  = useState<boolean>(false);
@@ -27,7 +27,7 @@ const HomePage = ({ signOut, user }: WithAuthenticatorProps) => {
   const [isFunctionRunning, setIsFunctionRunning] = useState<boolean>(false)
   const  [uploadedImage, setUploadedImage] = useState<File>()
   const imageURLPath = "https://finaldermiqbucket182827-dev.s3.us-west-1.amazonaws.com/public/";
-  const {reports, createNewReport} = useReports();
+  const { createNewReport} = useReports();
   const navigate = useNavigate();
   
 
@@ -102,6 +102,7 @@ const HomePage = ({ signOut, user }: WithAuthenticatorProps) => {
   };
 
   async function getNextStepsCare(disease:string, size:number) {
+    
     const messages = [
         {
             role: "system",
@@ -147,15 +148,18 @@ const HomePage = ({ signOut, user }: WithAuthenticatorProps) => {
     setIsFunctionRunning(true)
     const diagnosis = await callPredictEndpoint();
     let size;
-
-    if (diagnosis == 'other'){
+    let nextSteps;
+    if (diagnosis == 'Other'){
       size = -1;
+      nextSteps = "Please upload only images of skin conditions, as our DermIQQ cannot accurately evaluate pictures of random objects or non-skin-related issues."
     }
     else{
       size = await callGetSizeEndpoint();
-    }
 
-    const nextSteps = await getNextStepsCare(diagnosis, size);
+    const newSize:number = parseFloat(size.toFixed(2));
+
+    nextSteps = await getNextStepsCare(diagnosis, newSize);
+    }
 
     await uploadImageToS3();
     const entryID=uuidv4()
@@ -175,7 +179,7 @@ const HomePage = ({ signOut, user }: WithAuthenticatorProps) => {
     const newReport: APITypes.CreateReportInput = {
       id: reportID,
       imageuri:imageURL,
-      area: size,
+      area: parseFloat(size.toFixed(2)),
       usercomments: "",
       nlpresponse: nextSteps,
       entry_id: entryID,

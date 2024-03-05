@@ -19,9 +19,7 @@ export function App({ signOut, user }: WithAuthenticatorProps) {
             <MedicationsProvider>
               <ReportsProvider>
               <Routes>
-                {/* Define the route for the HomePage */}
                 <Route path="/" element={<HomePage signOut={signOut} user={user} />} />
-                {/* Define the route for CreateDiagnosisPage */}
                 <Route path="/reports/:entryId" element={<ReportPage />} />
               </Routes>
               </ReportsProvider>

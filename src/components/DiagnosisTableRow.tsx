@@ -72,7 +72,6 @@ export const DiagnosisTableRow = ({
                 <Button
                 variant="contained"
                 onClick={()=>{if(entryID){
-                    console.log(diagnosis)
                     navigate(`reports/${entryID}`, { state: { diagnosis } });
             }    
                 }}

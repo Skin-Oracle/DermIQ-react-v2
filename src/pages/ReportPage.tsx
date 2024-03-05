@@ -20,13 +20,13 @@ const ReportPage = () => {
     const location = useLocation();
     const { diagnosis } = location.state || {};
 
-    const {createNewReport} = useReports();
+    const {reports, createNewReport} = useReports();
     const { entryId } = useParams<"entryId">();
     const  [uploadedImage, setUploadedImage] = useState<File>()
     const [userComments, setUserComments] = useState<string>("");
     const [isFunctionRunning, setIsFunctionRunning] = useState<boolean>(false)
     const imageURLPath = "https://finaldermiqbucket182827-dev.s3.us-west-1.amazonaws.com/public/";
-    const OPENAI_API_KEY='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'
+    const OPENAI_API_KEY='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'
 
     const [isModalOpen, setIsModalOpen]  = useState<boolean>(false);
     
@@ -104,18 +104,77 @@ const ReportPage = () => {
     }
   };
 
-  async function getNextStepsCare(disease:string, size:number) {
-    const messages = [
+//   async function generateReportText(disease:string, size:number, userComments: string) {
+//     const messages = [
+//         {
+//             role: "system",
+//             content: "This is a model trained on medical data. It can suggest the next steps of care based on a diagnosed disease and its size."
+//         },
+//         {
+//             role: "user",
+//             content: `The patient has been diagnosed with ${disease} with a size of ${size} mm^2. What should the next steps of care be? Answer in 2 sentences`
+//         }
+//     ];
+    
+//     const response = await axios.post(
+//         `https://api.openai.com/v1/chat/completions`,
+//         {
+//             model: "gpt-3.5-turbo",
+//             messages,
+//             temperature: 0.7
+//         },
+//         {
+//             headers: {
+//                 Authorization: `Bearer ${OPENAI_API_KEY}`,
+//                 'Content-Type': 'application/json',
+//             },
+//         },
+//     );
+    
+//     return response.data.choices[0].message['content'];
+// }
+
+
+const generateSummaryMessages = async (entryId:string, newDisease:string, newSize:number, newUserComments:string) => {
+  const messages = [
+    {
+      role: "system",
+      content: "This is a model designed to summarize medical reports and patient feedback on skin conditions over time."
+    }
+  ];
+
+  // Provide context from previous reports
+  if (reports && reports[entryId]) {
+    reports[entryId].forEach((report, index) => {
+      messages.push(
         {
-            role: "system",
-            content: "This is a model trained on medical data. It can suggest the next steps of care based on a diagnosed disease and its size."
+          role: "system",
+          content: `Report ID: ${report.id}. Previous size: ${report.area} mm^2 on ${new Date(report.createdAt).toLocaleDateString()}.`
         },
         {
-            role: "user",
-            content: `The patient has been diagnosed with ${disease} with a size of ${size} mm^2. What should the next steps of care be? Answer in 2 sentences`
+          role: "system",
+          content: `Previous user comments: ${report.usercomments || "No comments provided."}`
         }
-    ];
-    
+      );
+    });
+  }
+  if (newUserComments) {
+    messages.push(
+      {
+        role: "user",
+        content: newUserComments
+      }
+    );
+  }
+
+  // Add the prompt for the AI to summarize the changes
+  messages.push(
+    {
+      role: "user",
+      content: `The patient's current condition of ${newDisease} has a size of ${newSize} mm^2. Based on the previous report information provided and current update, can you summarize the progression of the condition and the user's sentiments about their updated condition so they can share with their physician?`
+    }
+  );
+
     const response = await axios.post(
         `https://api.openai.com/v1/chat/completions`,
         {
@@ -130,10 +189,10 @@ const ReportPage = () => {
             },
         },
     );
-    
+  
     return response.data.choices[0].message['content'];
-
-}
+  return messages;
+};
   async function uploadImageToS3() {
     if (uploadedImage){
       const response = await uploadData({
@@ -149,8 +208,11 @@ const ReportPage = () => {
     setIsFunctionRunning(true);
     
     const size = await callGetSizeEndpoint();
-
-    const nextSteps = await getNextStepsCare(diagnosis, size);
+    const formattedSize = parseFloat(size.toFixed(2));
+    let newNLPResponse = ""
+    if(entryId){
+      newNLPResponse = await generateSummaryMessages(entryId, diagnosis, formattedSize, userComments);
+    }
 
     await uploadImageToS3();
 
@@ -159,9 +221,9 @@ const ReportPage = () => {
     const newReport: APITypes.CreateReportInput = {
       id: reportID,
       imageuri:imageURL,
-      area: size,
+      area: formattedSize,
       usercomments: userComments,
-      nlpresponse: nextSteps,
+      nlpresponse: newNLPResponse,
       entry_id: entryId,
     }
     await createNewReport(newReport);

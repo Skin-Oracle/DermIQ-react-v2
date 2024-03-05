@@ -30,14 +30,12 @@ export const ReportsProvider = (props: { children: React.ReactNode }) => {
         query: listReports,
         variables:{
           filter: {
-            id: {
+            entry_id: {
               eq: entryID // This line specifies the filter condition
             }
           }
         }
       }));
-
-      console.log(response.data.listReports.items)
 
       if (response.data.listReports.items){
         setReports((prevReports) => ({
@@ -63,7 +61,7 @@ export const ReportsProvider = (props: { children: React.ReactNode }) => {
       // Check if the mutation was successful
       if (response.data?.createReport && input.entry_id) {
         const newReport = response.data.createReport;
-        console.log(newReport)
+
         const entryId = input.entry_id;
 
         setReports((prevReports) => {
