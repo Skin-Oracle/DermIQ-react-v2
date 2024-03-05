@@ -9,7 +9,6 @@ import { useState } from 'react';
 import { uploadData } from 'aws-amplify/storage';
 import { v4 as uuidv4 } from 'uuid';
 import * as APITypes from "../API";
-import { CreateDiagnosisModal } from '../components/modals/CreateDiagnosisModal';
 import { CreateReportModal } from '../components/modals/CreateReportModal';
 
 
@@ -25,6 +24,7 @@ const ReportPage = () => {
     const { entryId } = useParams<"entryId">();
     const  [uploadedImage, setUploadedImage] = useState<File>()
     const [userComments, setUserComments] = useState<string>("");
+    const [isFunctionRunning, setIsFunctionRunning] = useState<boolean>(false)
     const imageURLPath = "https://finaldermiqbucket182827-dev.s3.us-west-1.amazonaws.com/public/";
     const OPENAI_API_KEY='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'
 
@@ -146,6 +146,7 @@ const ReportPage = () => {
   }
   }
   const handleCreateReport = async () =>{
+    setIsFunctionRunning(true);
     
     const size = await callGetSizeEndpoint();
 
@@ -159,11 +160,12 @@ const ReportPage = () => {
       id: reportID,
       imageuri:imageURL,
       area: size,
-      usercomments: "",
+      usercomments: userComments,
       nlpresponse: nextSteps,
       entry_id: entryId,
     }
     await createNewReport(newReport);
+    setIsFunctionRunning(false);
     handleCloseModal();
   }
 
@@ -224,6 +226,7 @@ const ReportPage = () => {
           handleImageUpload={handleImageUpload}
           handleCreateReport={handleCreateReport}
           handleSetUserComments={handleSetUserComments}
+          isFunctionRunning={isFunctionRunning}
         />
       </Container>
     )

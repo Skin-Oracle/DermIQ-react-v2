@@ -9,8 +9,9 @@ interface Props{
     handleCreateEntry: () => void;
     handleSetBodyPart: (part: string) => void;
     handleSetEntryName: (name: string) => void;
+    isFunctionRunning: boolean;
 }
-export const CreateDiagnosisModal = ({open, onClose, handleImageUpload, handleCreateEntry, handleSetBodyPart, handleSetEntryName}: Props) => {
+export const CreateDiagnosisModal = ({open, onClose, handleImageUpload, handleCreateEntry, handleSetBodyPart, handleSetEntryName, isFunctionRunning}: Props) => {
 
     const [entryName, setEntryName] = useState('');
   const [bodyPart, setBodyPart] = useState('');

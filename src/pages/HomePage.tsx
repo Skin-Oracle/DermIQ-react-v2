@@ -24,6 +24,7 @@ const HomePage = ({ signOut, user }: WithAuthenticatorProps) => {
   const { entries, createNewEntry, fetchEntries} =useEntries();
   const [ bodyPart, setBodyPart] = useState<string>("");
   const [entryName, setEntryName] = useState<string>("");
+  const [isFunctionRunning, setIsFunctionRunning] = useState<boolean>(false)
   const  [uploadedImage, setUploadedImage] = useState<File>()
   const imageURLPath = "https://finaldermiqbucket182827-dev.s3.us-west-1.amazonaws.com/public/";
   const {reports, createNewReport} = useReports();
@@ -143,6 +144,7 @@ const HomePage = ({ signOut, user }: WithAuthenticatorProps) => {
   }
   }
   const handleCreateEntry = async () =>{
+    setIsFunctionRunning(true)
     const diagnosis = await callPredictEndpoint();
     let size;
 
@@ -179,6 +181,7 @@ const HomePage = ({ signOut, user }: WithAuthenticatorProps) => {
       entry_id: entryID,
     }
     await createNewReport(newReport);
+    setIsFunctionRunning(false);
     navigate(`reports/${entryID}`, { state: { diagnosis } });
   }
 
@@ -237,6 +240,7 @@ const HomePage = ({ signOut, user }: WithAuthenticatorProps) => {
         handleCreateEntry={handleCreateEntry}
         handleSetBodyPart={handleSetBodyPart}
         handleSetEntryName={handleSetEntryName}
+        isFunctionRunning={isFunctionRunning}
       />
       </Container>
     </>

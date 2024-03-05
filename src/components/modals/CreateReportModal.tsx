@@ -8,8 +8,9 @@ interface Props{
     handleImageUpload: (file: File) => void;
     handleCreateReport: () => void;
     handleSetUserComments: (part: string) => void;
+    isFunctionRunning: boolean;
 }
-export const CreateReportModal = ({open, onClose, handleImageUpload, handleCreateReport, handleSetUserComments}: Props) => {
+export const CreateReportModal = ({open, onClose, handleImageUpload, handleCreateReport, handleSetUserComments, isFunctionRunning}: Props) => {
 
     const [userComments, setUserComments] = useState('');
 
