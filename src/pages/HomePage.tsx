@@ -19,7 +19,6 @@ import Logo from '../components/dermlogo.png';
 import { cardio } from 'ldrs'
 
 const HomePage = ({ signOut, user }: WithAuthenticatorProps) => {
-  // const OPENAI_API_KEY=''
 
   const {users, fetchOrCreateUser} = useUsersContext();
   const [isModalOpen, setIsModalOpen]  = useState<boolean>(false);
