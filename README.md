@@ -1,6 +1,11 @@
-# React + TypeScript + Vite
+note: Backend is fully hosted on AWS US-WEST-1
 
-Backend is fully hosted on AWS US-WEST-1
+# Quick Links
+
+[Presentation](https://docs.google.com/presentation/d/1m_OOWtVvnNwTZf1hH8pmGAPQ1GTZ6Q6CqmGLYLbQFnc/edit#slide=id.g2baee9e7849_0_3)
+
+!<img width="975" alt="Screenshot 2024-03-06 at 5 07 04 PM" src="https://github.com/Skin-Oracle/DermIQ-react-v2/assets/53193453/b2f474a3-8de1-4496-8b74-58614d07561b">
+
 
 ### one time setup 
 
