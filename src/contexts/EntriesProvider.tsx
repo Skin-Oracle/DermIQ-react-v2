@@ -38,6 +38,7 @@ export const EntriesProvider = (props: { children: React.ReactNode }) => {
           }
         }
       }));
+      console.log(fetchEntries)
       if (response.data.listEntries.items){
         setEntries(response.data.listEntries.items)
       }

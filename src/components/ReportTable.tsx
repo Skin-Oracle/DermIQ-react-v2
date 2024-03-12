@@ -26,16 +26,28 @@ import {
           <TableHead>
             <TableRow sx={{ "& th": { p: "8px 16px" } }}>
               <TableCell sx={{ width: "15%" }}>
-                Date
+                <Typography sx={{fontFamily:"DM Sans", fontSize: "24px", color: "#404040", fontWeight: 800 }}>
+
+                  Date
+                </Typography>
               </TableCell>
               <TableCell sx={{ width: "15%" }}>
-                Area
+              <Typography sx={{fontFamily:"DM Sans", fontSize: "24px", color: "#404040", fontWeight: 800 }}>
+
+                  Area
+                </Typography>
               </TableCell>
               <TableCell sx={{ width: "30%" }}>
-                Image
+              <Typography sx={{fontFamily:"DM Sans", fontSize: "24px", color: "#404040", fontWeight: 800 }}>
+
+                  Image
+                </Typography>
               </TableCell>
               <TableCell sx={{ width: "40%" }}>
-                Notes
+              <Typography sx={{fontFamily:"DM Sans", fontSize: "24px", color: "#404040", fontWeight: 800 }}>
+
+                  Notes
+                </Typography>
               </TableCell>
             </TableRow>
           </TableHead>

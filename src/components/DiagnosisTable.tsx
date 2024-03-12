@@ -57,22 +57,24 @@ export const DiagnosisTable = ({handleOpenModal}:Props) => {
         <TableHead>
           <TableRow sx={{ "& th": { p: "8px 16px" } }}>
             <TableCell sx={{ width: "20%" }}>
-              <Typography sx={{fontFamily:"DM Sans", fontSize: "20px", color: "#404040", fontWeight: 600 }}>
+            <Typography sx={{fontFamily:"DM Sans", fontSize: "24px", color: "#404040", fontWeight: 800 }}>
+
                 Name
               </Typography>
             </TableCell>
             <TableCell sx={{ width: "25%" }}>
-              <Typography sx={{fontFamily:"DM Sans", fontSize: "20px", color: "#404040", fontWeight: 600 }}>
+            <Typography sx={{fontFamily:"DM Sans", fontSize: "24px", color: "#404040", fontWeight: 800 }}>
+
                 Diagnosis
               </Typography>
             </TableCell>
             <TableCell sx={{ width: "20%" }}>
-              <Typography sx={{fontFamily:"DM Sans", fontSize: "20px", color: "#404040", fontWeight: 600 }}>
+            <Typography sx={{fontFamily:"DM Sans", fontSize: "24px", color: "#404040", fontWeight: 800 }}>
                 Body Part
               </Typography>
             </TableCell>
             <TableCell sx={{ width: "20%" }}>
-              <Typography sx={{fontFamily:"DM Sans", fontSize: "20px", color: "#404040", fontWeight: 600 }}>
+              <Typography sx={{fontFamily:"DM Sans", fontSize: "24px", color: "#404040", fontWeight: 800 }}>
                 Date Created
               </Typography>
             </TableCell>
@@ -126,7 +128,11 @@ export const DiagnosisTable = ({handleOpenModal}:Props) => {
                   <Button
                     variant="contained"
                     onClick={handleOpenModal}
-                    sx={{fontFamily:"DM Sans", fontSize: "15px", fontWeight: 600 }}
+                    sx={{fontFamily:"DM Sans", fontSize: "17px", fontWeight: 600, backgroundColor: "#6583BB",
+                    color: "white",
+                    "&:hover, &:focus": {
+                      backgroundColor: "#5A75A8",
+                    },  }}
                   >
                     New Diagnosis
                   </Button>

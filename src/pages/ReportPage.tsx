@@ -1,5 +1,5 @@
 import { useReports } from '../contexts/ReportsProvider'
-import { Container, Box, Typography, Button  } from '@mui/material'
+import { Container, Box, Typography, Button, createTheme, ThemeProvider  } from '@mui/material'
 import { ReportTable } from '../components/ReportTable'
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
@@ -11,6 +11,9 @@ import { v4 as uuidv4 } from 'uuid';
 import * as APITypes from "../API";
 import { CreateReportModal } from '../components/modals/CreateReportModal';
 
+import Logo from '../components/dermlogo.png';
+import IconButton from '@mui/material/IconButton';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 
 
@@ -199,45 +202,88 @@ const generateSummaryMessages = async (entryId:string, newDisease:string, newSiz
     setIsFunctionRunning(false);
     handleCloseModal();
   }
-
+  const theme = createTheme({
+    typography: {
+      fontFamily: [
+        'DM Sans',
+      ].join(','),
+    },
+  });
 
     return (
-        <Container
-            sx={{ width: "100%", py: "50px"}}
-            maxWidth="xl"
-            disableGutters>
+      <ThemeProvider theme={theme}>      
+        <Box
+            sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            textAlign: "center",
+            width: "100%",
+            mb: "-75px",
+          }}
+        >
+          <img src={Logo} alt = "Derm IQ Logo" width="200"/>
+        </Box>
+            <Container
+              sx={{ width: "100%", mt:"40px",pt:"30px",pb: "0px", mx: "auto", maxWidth:"1200px"}}
+              disableGutters>
+                <IconButton
+                  onClick={handleGoHome}
+                >
+                  <ArrowBackIcon sx={{ fontSize: '40px', color:"#404040",}} />
+                </IconButton>
+            </Container>
+            <Container
+        sx={{ width: "100%", mt:"40px",pt:"30px",pb: "50px", mx: "auto", maxWidth:"1200px", backgroundColor:"white",px:"50px", border:"1px solid #e9e8ed"}}
+        disableGutters
+      >
             <Box
                 sx={{
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",
                     width: "100%",
-                    mb: "30px",
+                    mb: "15px",
                 }}
             >
-          <Typography sx={{ fontSize: "1.5rem", color: "#404040", fontWeight: 600 }}>
-            {`${diagnosis} Report`}
-          </Typography> 
-
-          <Button
-          variant="contained"
-          onClick={handleGoHome}
-          >
-            Back
-          </Button>
-
-          <Button
-          variant="contained"
-          onClick={() => downloadReport()}
-          >
-            Download
-          </Button>
-          <Button
+          <Box
+            flex={"display"}
+            flexDirection={"column"}
+            sx={{}}>
+            <Typography sx={{fontFamily:"DM Sans", fontSize: "35px", color: "#404040", fontWeight: 800 }}>
+              {`Report`}
+            </Typography> 
+            <Typography sx={{fontFamily:"DM Sans", fontSize: "px", color: "#404040", fontWeight: 400 }}>
+              {`Diagnosis: ${diagnosis}`}
+            </Typography> 
+          </Box>
+          <Box sx={{
+            display: "flex",
+            gap: "10px",
+          }}>
+            <Button
             variant="contained"
-            onClick={handleOpenModal}
-          >
-            New Report Entry
-          </Button>
+            onClick={() => downloadReport()}
+            sx={{fontFamily:"DM Sans", fontSize: "17px", fontWeight: 600, backgroundColor: "#6583BB",
+            color: "white",
+            "&:hover, &:focus": {
+              backgroundColor: "#5A75A8",
+            },  }}
+            >
+              Download
+            </Button>
+            <Button
+              variant="contained"
+              onClick={handleOpenModal}
+              sx={{fontFamily:"DM Sans", fontSize: "17px", fontWeight: 600, backgroundColor: "#6583BB",
+              color: "white",
+              "&:hover, &:focus": {
+                backgroundColor: "#5A75A8",
+              },  }}
+            >
+              New Report Entry
+            </Button>
+          </Box>
         </Box>
 
         <Box
@@ -260,6 +306,7 @@ const generateSummaryMessages = async (entryId:string, newDisease:string, newSiz
           isFunctionRunning={isFunctionRunning}
         />
       </Container>
+      </ThemeProvider>
     )
 }
 

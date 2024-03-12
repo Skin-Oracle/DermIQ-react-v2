@@ -101,19 +101,30 @@ export const CreateDiagnosisModal = ({open, onClose, handleImageUpload, handleCr
                             <PhotoUploadComponent
                                 handleImageUpload={handleImageUploadWrapper}
                              />
-
-                            <Box sx={{ display: "flex", justifyContent: "center", mt: "10px", gap: "20px" }}>
-                                <Button variant="outlined" onClick={onClose}>
-                                    Cancel
-                                </Button>
-                                <Button
-                                variant="contained"
-                                onClick={handleCreateEntry}
-                                disabled={isConfirmDisabled}
-                                >
-                                    Confirm
-                                </Button>
-                            </Box>
+                        {isFunctionRunning ? (
+                                <Box sx={{ display: "flex", justifyContent: "center", mt: "10px", gap: "20px" }}>
+                                <l-cardio
+                                size="50"
+                                stroke="4"
+                                speed="2" 
+                                color="black" 
+                              ></l-cardio>
+                              </ Box>
+                                
+                            ):(
+                                <Box sx={{ display: "flex", justifyContent: "center", mt: "10px", gap: "20px" }}>
+                                    <Button variant="outlined" onClick={onClose}>
+                                        Cancel
+                                    </Button>
+                                    <Button
+                                        variant="contained"
+                                        onClick={handleCreateEntry}
+                                        disabled={isConfirmDisabled}
+                                    >
+                                        Confirm
+                                    </Button>
+                                </Box>
+                            )}
                         </Box>
                     </Box>
                 </>

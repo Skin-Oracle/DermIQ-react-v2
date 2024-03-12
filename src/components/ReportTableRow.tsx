@@ -39,15 +39,16 @@ export const ReportTableRow = ({entryID, reportID,imageuri, nlpresponse, created
         }}
       >
         <TableCell sx={{ width: "10%" }}>
-            <Typography>
+          <Typography sx={{fontFamily:"DM Sans", fontSize: "19px", color: "#404040", fontWeight: 400 }}>
                 {createdAt}
             </Typography>
         </TableCell>
         <TableCell sx={{ width: "10%" }}>
-        <Typography component="p">
-          <span >{area}</span>
-          <span> mm²</span>
-        </Typography>
+          <Typography sx={{fontFamily:"DM Sans", fontSize: "19px", color: "#404040", fontWeight: 400 }}>
+
+            <span >{area}</span>
+            <span> mm²</span>
+          </Typography>
         </TableCell>
         <TableCell
           sx={{

@@ -1,6 +1,7 @@
 import { Box, Button, Modal, TextField, ThemeProvider, Typography, createTheme } from "@mui/material"
 import PhotoUploadComponent from "../PhotoUploadComponent";
 import { useState } from "react";
+import { cardio } from 'ldrs'
 
 interface Props{
     open: boolean;
@@ -11,10 +12,10 @@ interface Props{
     isFunctionRunning: boolean;
 }
 export const CreateReportModal = ({open, onClose, handleImageUpload, handleCreateReport, handleSetUserComments, isFunctionRunning}: Props) => {
-
+    cardio.register()
     const [userComments, setUserComments] = useState('');
-
-  const isConfirmDisabled = !userComments;
+    const [isPhotoUploaded, setIsPhotoUploaded] = useState(false);
+  const isConfirmDisabled = !userComments || !isPhotoUploaded; // Confirms is disabled if any of the fields is empty
 
   const handleUserCommentsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const name = event.target.value;
@@ -26,7 +27,10 @@ export const CreateReportModal = ({open, onClose, handleImageUpload, handleCreat
     handleCreateReport();
     setUserComments("")
   }
-
+  const handleImageUploadWrapper = (file: File) => {
+    handleImageUpload(file);
+    setIsPhotoUploaded(true); // Set to true once a photo is uploaded
+};
 
   const theme = createTheme({
     typography: {
@@ -71,15 +75,26 @@ export const CreateReportModal = ({open, onClose, handleImageUpload, handleCreat
                         >
                             <Typography sx={{fontFamily:"DM Sans", fontSize: "25px", color: "#404040", fontWeight: 800 }}>Add Report Entry</Typography>
                             <PhotoUploadComponent
-                                handleImageUpload={handleImageUpload}
+                                handleImageUpload={handleImageUploadWrapper}
                              />
                             <TextField
                             required
                             label="User comments"
                             value={userComments}
                             onChange={handleUserCommentsChange}
+                            disabled={isFunctionRunning}
                             />
 
+                        {isFunctionRunning ? (
+                                <Box sx={{ display: "flex", justifyContent: "center", mt: "10px", gap: "20px" }}>
+                                    <l-cardio
+                                        size="50"
+                                        stroke="4"
+                                        speed="2" 
+                                        color="black" 
+                                    ></l-cardio>
+                                </Box>
+                            ):(
                             <Box sx={{ display: "flex", justifyContent: "center", mt: "10px", gap: "20px" }}>
                                 <Button variant="outlined" onClick={onClose}>
                                     Cancel
@@ -91,7 +106,7 @@ export const CreateReportModal = ({open, onClose, handleImageUpload, handleCreat
                                 >
                                     Confirm
                                 </Button>
-                            </Box>
+                            </Box>)}
                         </Box>
                     </Box>
                 </>

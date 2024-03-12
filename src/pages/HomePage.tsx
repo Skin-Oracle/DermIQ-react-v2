@@ -20,7 +20,7 @@ import { cardio } from 'ldrs'
 
 const HomePage = ({ signOut, user }: WithAuthenticatorProps) => {
 
-  const {users, fetchOrCreateUser} = useUsersContext();
+  // const {users, fetchOrCreateUser} = useUsersContext();
   const [isModalOpen, setIsModalOpen]  = useState<boolean>(false);
   const { entries, createNewEntry, fetchEntries} =useEntries();
   const [ bodyPart, setBodyPart] = useState<string>("");
@@ -30,7 +30,7 @@ const HomePage = ({ signOut, user }: WithAuthenticatorProps) => {
   const imageURLPath = "https://finaldermiqbucket182827-dev.s3.us-west-1.amazonaws.com/public/";
   const { createNewReport} = useReports();
   const navigate = useNavigate();
-  
+
   cardio.register()
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -68,6 +68,7 @@ const HomePage = ({ signOut, user }: WithAuthenticatorProps) => {
           'Content-Type': 'multipart/form-data' // Important header for file uploads
         }
       });
+      console.log(response)
       // Handle the response data as needed, e.g., store in state, display on UI
       return response.data.Diagnosis
     } catch (error) {
@@ -231,8 +232,8 @@ const HomePage = ({ signOut, user }: WithAuthenticatorProps) => {
       <img src={Logo} alt = "Derm IQ Logo" width="200"/>
     </Box>
     
-      <Container
-        sx={{ width: "100%", py: "50px", mx: "auto", maxWidth:"1000px"}}
+    <Container
+        sx={{ width: "100%", mt:"40px",pt:"30px",pb: "50px", mx: "auto", maxWidth:"1000px", backgroundColor:"white",px:"30px", border:"1px solid #e9e8ed"}}
         disableGutters
       >
         <Box
@@ -251,7 +252,11 @@ const HomePage = ({ signOut, user }: WithAuthenticatorProps) => {
           <Button
             variant="contained"
             onClick={handleOpenModal}
-            sx={{fontFamily:"DM Sans", fontSize: "17px", fontWeight: 600 }}
+            sx={{fontFamily:"DM Sans", fontSize: "17px", fontWeight: 600, backgroundColor: "#6583BB",
+            color: "white",
+            "&:hover, &:focus": {
+              backgroundColor: "#5A75A8",
+            },  }}
           >          
             New Diagnosis
           </Button>

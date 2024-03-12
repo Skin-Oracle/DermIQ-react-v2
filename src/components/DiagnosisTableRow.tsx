@@ -40,22 +40,24 @@ export const DiagnosisTableRow = ({
         <TableCell
           sx={{width: "20%"}}
         >
-            <Typography>
+            <Typography sx={{fontFamily:"DM Sans", fontSize: "19px", color: "#404040", fontWeight: 400 }}>
                 {entryName}
             </Typography>
         </TableCell>
         <TableCell sx={{ width: "25%" }}>
-            <Typography>
+            <Typography sx={{fontFamily:"DM Sans", fontSize: "19px", color: "#404040", fontWeight: 400 }}>
                 {diagnosis}
             </Typography>
         </TableCell>
         <TableCell sx={{ width: "20%" }}>
-            <Typography>
+            <Typography sx={{fontFamily:"DM Sans", fontSize: "19px", color: "#404040", fontWeight: 400 }}>
+
                 {bodyPart}
             </Typography>
         </TableCell>
         <TableCell sx={{ width: "20%" }}>
-            <Typography>
+            <Typography sx={{fontFamily:"DM Sans", fontSize: "19px", color: "#404040", fontWeight: 400 }}>
+
                 {createdAt}
             </Typography>
         </TableCell>
@@ -67,6 +69,11 @@ export const DiagnosisTableRow = ({
                     navigate(`reports/${entryID}`, { state: { diagnosis } });
             }    
                 }}
+                sx={{fontFamily:"DM Sans", fontSize: "14px", fontWeight: 600, backgroundColor: "#6583BB",
+                color: "white",
+                "&:hover, &:focus": {
+                  backgroundColor: "#5A75A8",
+                },  }}
                 >
                     View Report
                 </Button>
