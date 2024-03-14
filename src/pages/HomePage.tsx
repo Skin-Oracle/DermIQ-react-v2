@@ -51,6 +51,11 @@ const HomePage = ({ signOut, user }: WithAuthenticatorProps) => {
     setEntryName(name)
   }
 
+  const handleSocialBridge = () => {
+    window.location.href = 'http://localhost:8099/browse';
+  };
+  
+
   const callPredictEndpoint = async () => {
     if (!uploadedImage) {
       console.error('No image uploaded');
@@ -232,6 +237,7 @@ const HomePage = ({ signOut, user }: WithAuthenticatorProps) => {
       <img src={Logo} alt = "Derm IQ Logo" width="200"/>
     </Box>
     
+    
     <Container
         sx={{ width: "100%", mt:"40px",pt:"30px",pb: "50px", mx: "auto", maxWidth:"1000px", backgroundColor:"white",px:"30px", border:"1px solid #e9e8ed"}}
         disableGutters
@@ -249,18 +255,46 @@ const HomePage = ({ signOut, user }: WithAuthenticatorProps) => {
             Diagnoses Chart
           </Typography>
 
+          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Button
-            variant="contained"
-            onClick={handleOpenModal}
-            sx={{fontFamily:"DM Sans", fontSize: "17px", fontWeight: 600, backgroundColor: "#6583BB",
-            color: "white",
-            "&:hover, &:focus": {
-              backgroundColor: "#5A75A8",
-            },  }}
-          >          
-            New Diagnosis
-          </Button>
+              variant="contained"
+              onClick={handleSocialBridge}
+              sx={{
+                fontFamily: 'DM Sans',
+                fontSize: '17px',
+                fontWeight: 600,
+                backgroundColor: '#6583BB',
+                right: "10px",
+                color: 'white',
+                '&:hover, &:focus': {
+                  backgroundColor: '#5A75A8',
+                },
+              }}
+            >
+              Enter DermIQ Social
+            </Button>
+            <Button
+              variant="contained"
+              onClick={handleOpenModal}
+              sx={{
+                fontFamily: 'DM Sans',
+                fontSize: '17px',
+                fontWeight: 600,
+                backgroundColor: '#6583BB',
+                color: 'white',
+                '&:hover, &:focus': {
+                  backgroundColor: '#5A75A8',
+                },
+              }}
+            >
+              New Diagnosis
+            </Button>
+          
+          </Box>
+          
+        
         </Box>
+        
 
         <Box
           sx={{
