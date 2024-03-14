@@ -21,6 +21,7 @@ type Entry @model @auth(rules: [{allow: public}]) {
   entry_name: String
   diagnosis: String
   user_id: ID
+  medication: String
 }
 
 type Medication @model @auth(rules: [{allow: public}]) {

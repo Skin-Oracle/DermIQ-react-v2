@@ -80,6 +80,7 @@ export const getEntry = /* GraphQL */ `query GetEntry($id: ID!) {
     entry_name
     diagnosis
     user_id
+    medication
     createdAt
     updatedAt
     __typename
@@ -98,6 +99,7 @@ export const listEntries = /* GraphQL */ `query ListEntries(
       entry_name
       diagnosis
       user_id
+      medication
       createdAt
       updatedAt
       __typename

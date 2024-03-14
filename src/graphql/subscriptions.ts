@@ -102,6 +102,7 @@ export const onCreateEntry = /* GraphQL */ `subscription OnCreateEntry($filter: 
     entry_name
     diagnosis
     user_id
+    medication
     createdAt
     updatedAt
     __typename
@@ -118,6 +119,7 @@ export const onUpdateEntry = /* GraphQL */ `subscription OnUpdateEntry($filter: 
     entry_name
     diagnosis
     user_id
+    medication
     createdAt
     updatedAt
     __typename
@@ -134,6 +136,7 @@ export const onDeleteEntry = /* GraphQL */ `subscription OnDeleteEntry($filter: 
     entry_name
     diagnosis
     user_id
+    medication
     createdAt
     updatedAt
     __typename

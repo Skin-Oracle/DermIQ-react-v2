@@ -130,6 +130,7 @@ export type CreateEntryInput = {
   entry_name?: string | null,
   diagnosis?: string | null,
   user_id?: string | null,
+  medication?: string | null,
 };
 
 export type ModelEntryConditionInput = {
@@ -137,6 +138,7 @@ export type ModelEntryConditionInput = {
   entry_name?: ModelStringInput | null,
   diagnosis?: ModelStringInput | null,
   user_id?: ModelIDInput | null,
+  medication?: ModelStringInput | null,
   and?: Array< ModelEntryConditionInput | null > | null,
   or?: Array< ModelEntryConditionInput | null > | null,
   not?: ModelEntryConditionInput | null,
@@ -165,6 +167,7 @@ export type Entry = {
   entry_name?: string | null,
   diagnosis?: string | null,
   user_id?: string | null,
+  medication?: string | null,
   createdAt: string,
   updatedAt: string,
 };
@@ -175,6 +178,7 @@ export type UpdateEntryInput = {
   entry_name?: string | null,
   diagnosis?: string | null,
   user_id?: string | null,
+  medication?: string | null,
 };
 
 export type DeleteEntryInput = {
@@ -271,6 +275,7 @@ export type ModelEntryFilterInput = {
   entry_name?: ModelStringInput | null,
   diagnosis?: ModelStringInput | null,
   user_id?: ModelIDInput | null,
+  medication?: ModelStringInput | null,
   and?: Array< ModelEntryFilterInput | null > | null,
   or?: Array< ModelEntryFilterInput | null > | null,
   not?: ModelEntryFilterInput | null,
@@ -364,6 +369,7 @@ export type ModelSubscriptionEntryFilterInput = {
   entry_name?: ModelSubscriptionStringInput | null,
   diagnosis?: ModelSubscriptionStringInput | null,
   user_id?: ModelSubscriptionIDInput | null,
+  medication?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionEntryFilterInput | null > | null,
   or?: Array< ModelSubscriptionEntryFilterInput | null > | null,
 };
@@ -502,6 +508,7 @@ export type CreateEntryMutation = {
     entry_name?: string | null,
     diagnosis?: string | null,
     user_id?: string | null,
+    medication?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -520,6 +527,7 @@ export type UpdateEntryMutation = {
     entry_name?: string | null,
     diagnosis?: string | null,
     user_id?: string | null,
+    medication?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -538,6 +546,7 @@ export type DeleteEntryMutation = {
     entry_name?: string | null,
     diagnosis?: string | null,
     user_id?: string | null,
+    medication?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -683,6 +692,7 @@ export type GetEntryQuery = {
     entry_name?: string | null,
     diagnosis?: string | null,
     user_id?: string | null,
+    medication?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -704,6 +714,7 @@ export type ListEntriesQuery = {
       entry_name?: string | null,
       diagnosis?: string | null,
       user_id?: string | null,
+      medication?: string | null,
       createdAt: string,
       updatedAt: string,
     } | null >,
@@ -856,6 +867,7 @@ export type OnCreateEntrySubscription = {
     entry_name?: string | null,
     diagnosis?: string | null,
     user_id?: string | null,
+    medication?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -873,6 +885,7 @@ export type OnUpdateEntrySubscription = {
     entry_name?: string | null,
     diagnosis?: string | null,
     user_id?: string | null,
+    medication?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -890,6 +903,7 @@ export type OnDeleteEntrySubscription = {
     entry_name?: string | null,
     diagnosis?: string | null,
     user_id?: string | null,
+    medication?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,

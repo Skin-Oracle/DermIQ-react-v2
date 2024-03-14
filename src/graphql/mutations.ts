@@ -123,6 +123,7 @@ export const createEntry = /* GraphQL */ `mutation CreateEntry(
     entry_name
     diagnosis
     user_id
+    medication
     createdAt
     updatedAt
     __typename
@@ -142,6 +143,7 @@ export const updateEntry = /* GraphQL */ `mutation UpdateEntry(
     entry_name
     diagnosis
     user_id
+    medication
     createdAt
     updatedAt
     __typename
@@ -161,6 +163,7 @@ export const deleteEntry = /* GraphQL */ `mutation DeleteEntry(
     entry_name
     diagnosis
     user_id
+    medication
     createdAt
     updatedAt
     __typename
