@@ -3,9 +3,8 @@ import '@aws-amplify/ui-react/styles.css';
 // import FileUploader from '../components/FileUploader';
 // import DermLogo from '../assets/DermLogo.png';
 import './HomePage.css';
-import {Button, Container, Box, Typography, createTheme} from '@mui/material'
+import {Button, Container, Box, Typography, createTheme, Menu, MenuItem} from '@mui/material'
 import { DiagnosisTable } from '../components/DiagnosisTable';
-import { useUsersContext } from '../contexts/UsersProvider';
 import { useEffect, useState } from 'react';
 import { CreateDiagnosisModal } from '../components/modals/CreateDiagnosisModal';
 import { useEntries } from '../contexts/EntriesProvider';
@@ -55,6 +54,22 @@ const HomePage = ({ signOut, user }: WithAuthenticatorProps) => {
   const handleSocialBridge = () => {
     window.location.href = 'http://localhost:8099/browse';
   };
+
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleMenuItemClick = (callback) => {
+    callback(); // The function you want to call
+    handleClose(); // Close the menu
+  };
+
   
 
   const callPredictEndpoint = async () => {
@@ -74,7 +89,6 @@ const HomePage = ({ signOut, user }: WithAuthenticatorProps) => {
           'Content-Type': 'multipart/form-data' // Important header for file uploads
         }
       });
-      console.log(response)
       // Handle the response data as needed, e.g., store in state, display on UI
       return response.data.Diagnosis
     } catch (error) {
@@ -194,7 +208,7 @@ const HomePage = ({ signOut, user }: WithAuthenticatorProps) => {
     }
     await createNewReport(newReport);
     setIsFunctionRunning(false);
-    navigate(`reports/${entryID}`, { state: { diagnosis } });
+    navigate(`reports/${entryID}`, { state: { diagnosis: diagnosis, entryName: entryName, userID: user.userId } });
   }
 
   
@@ -240,7 +254,7 @@ const HomePage = ({ signOut, user }: WithAuthenticatorProps) => {
     
     
     <Container
-        sx={{ width: "100%", mt:"40px",pt:"30px",pb: "50px", mx: "auto", maxWidth:"1000px", backgroundColor:"white",px:"30px", border:"1px solid #e9e8ed"}}
+        sx={{ width: "100%", mt:"80px",pt:"30px",pb: "50px", mx: "auto", maxWidth:"1000px", backgroundColor:"white",px:"30px", border:"1px solid #e9e8ed"}}
         disableGutters
       >
         <Box
@@ -253,47 +267,54 @@ const HomePage = ({ signOut, user }: WithAuthenticatorProps) => {
           }}
         >
           <Typography sx={{fontFamily:"DM Sans", fontSize: "35px", color: "#404040", fontWeight: 800 }}>
-            Diagnoses Chart
+            Diagnoses
           </Typography>
-
-          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Box sx={{display:"flex", gap:"8px"}}>
           <Button
-              variant="contained"
-              onClick={handleSocialBridge}
-              sx={{
-                fontFamily: 'DM Sans',
-                fontSize: '17px',
-                fontWeight: 600,
-                backgroundColor: '#6583BB',
-                right: "10px",
-                color: 'white',
-                '&:hover, &:focus': {
-                  backgroundColor: '#5A75A8',
-                },
-              }}
-            >
-              Enter DermIQ Social
-            </Button>
+        variant="contained"
+        onClick={handleClick}
+        sx={{
+          fontFamily: 'DM Sans',
+          fontSize: '17px',
+          fontWeight: 600,
+          backgroundColor: 'white',
+          color: 'black',
+          border: '1px solid black', // Add a black border
+          '&:hover, &:focus': {
+            backgroundColor: 'black',
+            color:'white',
+            border: '1px solid black', // Add a black border
+          },
+        }}
+      >
+        Options
+      </Button>
+      <Menu 
+        id="simple-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+        <MenuItem onClick={() => handleMenuItemClick(signOut)}>Sign out</MenuItem>
+        <MenuItem onClick={() => handleMenuItemClick(handleSocialBridge)}>Enter DermIQ Social</MenuItem>
+      </Menu>
+
+
             <Button
               variant="contained"
               onClick={handleOpenModal}
-              sx={{
-                fontFamily: 'DM Sans',
-                fontSize: '17px',
-                fontWeight: 600,
-                backgroundColor: '#6583BB',
-                color: 'white',
-                '&:hover, &:focus': {
-                  backgroundColor: '#5A75A8',
-                },
-              }}
-            >
+              sx={{fontFamily:"DM Sans", fontSize: "17px", fontWeight: 600, backgroundColor: "#6583BB",
+              color: "white",
+              "&:hover, &:focus": {
+                backgroundColor: "#5A75A8",
+              },  }}
+            >          
               New Diagnosis
             </Button>
           
           </Box>
-          
-        
+
         </Box>
         
 
@@ -304,7 +325,7 @@ const HomePage = ({ signOut, user }: WithAuthenticatorProps) => {
             borderRadius: 0,
           }}
         >
-          <DiagnosisTable handleOpenModal={handleOpenModal} />
+          <DiagnosisTable handleOpenModal={handleOpenModal} userID={user.userId} />
         </Box>
         <CreateDiagnosisModal
         open={isModalOpen}
@@ -340,7 +361,3 @@ const HomePage = ({ signOut, user }: WithAuthenticatorProps) => {
 }
 
 export default HomePage
-
-
-
-

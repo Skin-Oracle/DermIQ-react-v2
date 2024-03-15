@@ -15,6 +15,8 @@ interface Props {
     diagnosis?: string | null;
     bodyPart?: string | null;
     createdAt?: string | null;
+    medication?: string | null;
+    userID: string;
 }
 
 export const DiagnosisTableRow = ({
@@ -23,6 +25,8 @@ export const DiagnosisTableRow = ({
     diagnosis,
     bodyPart,
     createdAt,
+    medication,
+    userID,
 }: Props) => {
     const navigate = useNavigate();
     const { deleteExistingEntry} = useEntries();
@@ -66,7 +70,7 @@ export const DiagnosisTableRow = ({
                 <Button
                 variant="contained"
                 onClick={()=>{if(entryID){
-                    navigate(`reports/${entryID}`, { state: { diagnosis } });
+                    navigate(`reports/${entryID}`, { state: { diagnosis: diagnosis, entryName: entryName, userMedication: medication, userID: userID } });
             }    
                 }}
                 sx={{fontFamily:"DM Sans", fontSize: "14px", fontWeight: 600, backgroundColor: "#6583BB",

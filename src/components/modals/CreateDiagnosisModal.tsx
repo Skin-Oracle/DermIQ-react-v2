@@ -98,6 +98,9 @@ export const CreateDiagnosisModal = ({open, onClose, handleImageUpload, handleCr
                             value={bodyPart}
                             onChange={handleBodyPartChange}
                             />
+                            <Box sx={{display:"flex", width:"100%",alignItems:"center", flexDirection:"row", justifyContent:"center"}}>
+                            <Typography>Please upload an image that has a US quarter placed next to the mark</Typography>
+                            </Box>
                             <PhotoUploadComponent
                                 handleImageUpload={handleImageUploadWrapper}
                              />
