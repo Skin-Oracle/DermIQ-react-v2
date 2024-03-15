@@ -15,7 +15,7 @@ import Logo from '../components/dermlogo.png';
 import IconButton from '@mui/material/IconButton';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
-
+const OPENAI_API_KEY = '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'
 
 const ReportPage = () => {
     const navigate = useNavigate();
