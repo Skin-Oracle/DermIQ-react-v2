@@ -3,7 +3,7 @@ import '@aws-amplify/ui-react/styles.css';
 // import FileUploader from '../components/FileUploader';
 // import DermLogo from '../assets/DermLogo.png';
 import './HomePage.css';
-import {Button, Container, Box, Typography, createTheme} from '@mui/material'
+import {Button, Container, Box, Typography, createTheme, Menu, MenuItem} from '@mui/material'
 import { DiagnosisTable } from '../components/DiagnosisTable';
 import { useEffect, useState } from 'react';
 import { CreateDiagnosisModal } from '../components/modals/CreateDiagnosisModal';
@@ -16,6 +16,7 @@ import * as APITypes from "../API";
 import { useNavigate } from 'react-router-dom';
 import Logo from '../components/dermlogo.png';
 import { cardio } from 'ldrs'
+
 
 const HomePage = ({ signOut, user }: WithAuthenticatorProps) => {
 
@@ -49,6 +50,27 @@ const HomePage = ({ signOut, user }: WithAuthenticatorProps) => {
   const handleSetEntryName = (name: string) =>{
     setEntryName(name)
   }
+
+  const handleSocialBridge = () => {
+    window.location.href = 'http://localhost:8099/browse';
+  };
+
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleMenuItemClick = (callback) => {
+    callback(); // The function you want to call
+    handleClose(); // Close the menu
+  };
+
+  
 
   const callPredictEndpoint = async () => {
     if (!uploadedImage) {
@@ -230,6 +252,7 @@ const HomePage = ({ signOut, user }: WithAuthenticatorProps) => {
       <img src={Logo} alt = "Derm IQ Logo" width="200"/>
     </Box>
     
+    
     <Container
         sx={{ width: "100%", mt:"80px",pt:"30px",pb: "50px", mx: "auto", maxWidth:"1000px", backgroundColor:"white",px:"30px", border:"1px solid #e9e8ed"}}
         disableGutters
@@ -248,30 +271,52 @@ const HomePage = ({ signOut, user }: WithAuthenticatorProps) => {
           </Typography>
           <Box sx={{display:"flex", gap:"8px"}}>
           <Button
-            variant="contained"
-            onClick={signOut}
-            sx={{fontFamily:"DM Sans", fontSize: "17px", fontWeight: 600, backgroundColor: "#6583BB",
-            color: "white",
-            "&:hover, &:focus": {
-              backgroundColor: "#5A75A8",
-            },  }}
-          >          
-            Sign out
-          </Button>
+        variant="contained"
+        onClick={handleClick}
+        sx={{
+          fontFamily: 'DM Sans',
+          fontSize: '17px',
+          fontWeight: 600,
+          backgroundColor: 'white',
+          color: 'black',
+          border: '1px solid black', // Add a black border
+          '&:hover, &:focus': {
+            backgroundColor: 'black',
+            color:'white',
+            border: '1px solid black', // Add a black border
+          },
+        }}
+      >
+        Options
+      </Button>
+      <Menu 
+        id="simple-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+        <MenuItem onClick={() => handleMenuItemClick(signOut)}>Sign out</MenuItem>
+        <MenuItem onClick={() => handleMenuItemClick(handleSocialBridge)}>Enter DermIQ Social</MenuItem>
+      </Menu>
 
-          <Button
-            variant="contained"
-            onClick={handleOpenModal}
-            sx={{fontFamily:"DM Sans", fontSize: "17px", fontWeight: 600, backgroundColor: "#6583BB",
-            color: "white",
-            "&:hover, &:focus": {
-              backgroundColor: "#5A75A8",
-            },  }}
-          >          
-            New Diagnosis
-          </Button>
+
+            <Button
+              variant="contained"
+              onClick={handleOpenModal}
+              sx={{fontFamily:"DM Sans", fontSize: "17px", fontWeight: 600, backgroundColor: "#6583BB",
+              color: "white",
+              "&:hover, &:focus": {
+                backgroundColor: "#5A75A8",
+              },  }}
+            >          
+              New Diagnosis
+            </Button>
+          
           </Box>
+
         </Box>
+        
 
         <Box
           sx={{
@@ -316,7 +361,3 @@ const HomePage = ({ signOut, user }: WithAuthenticatorProps) => {
 }
 
 export default HomePage
-
-
-
-

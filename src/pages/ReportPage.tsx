@@ -452,11 +452,18 @@ const generateSummaryMessages = async (entryId:string, newDisease:string, newSiz
         aria-expanded={menuOpen ? 'true' : undefined}
         onClick={handleMenuClick}
         variant="contained"
-        sx={{fontFamily:"DM Sans", fontSize: "17px", fontWeight: 600, backgroundColor: "#6583BB",
-        color: "white",
-        "&:hover, &:focus": {
-          backgroundColor: "#5A75A8",
-        }}}
+        sx={{fontFamily: 'DM Sans',
+          fontSize: '17px',
+          fontWeight: 600,
+          backgroundColor: 'white',
+          color: 'black',
+          border: '1px solid black', // Add a black border
+          '&:hover, &:focus': {
+            backgroundColor: 'black',
+            color:'white',
+            border: '1px solid black', // Add a black border
+          },
+        }}
       >
         More
       </Button>
