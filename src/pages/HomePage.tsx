@@ -18,7 +18,6 @@ import { useNavigate } from 'react-router-dom';
 import Logo from '../components/dermlogo.png';
 import { cardio } from 'ldrs'
 
-const OPENAI_API_KEY = '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'
 
 const HomePage = ({ signOut, user }: WithAuthenticatorProps) => {
 
