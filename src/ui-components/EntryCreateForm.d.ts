@@ -26,12 +26,14 @@ export declare type EntryCreateFormInputValues = {
     entry_name?: string;
     diagnosis?: string;
     user_id?: string;
+    medication?: string;
 };
 export declare type EntryCreateFormValidationValues = {
     body_part?: ValidationFunction<string>;
     entry_name?: ValidationFunction<string>;
     diagnosis?: ValidationFunction<string>;
     user_id?: ValidationFunction<string>;
+    medication?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type EntryCreateFormOverridesProps = {
@@ -40,6 +42,7 @@ export declare type EntryCreateFormOverridesProps = {
     entry_name?: PrimitiveOverrideProps<TextFieldProps>;
     diagnosis?: PrimitiveOverrideProps<TextFieldProps>;
     user_id?: PrimitiveOverrideProps<TextFieldProps>;
+    medication?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type EntryCreateFormProps = React.PropsWithChildren<{
     overrides?: EntryCreateFormOverridesProps | undefined | null;

@@ -29,11 +29,13 @@ export default function EntryUpdateForm(props) {
     entry_name: "",
     diagnosis: "",
     user_id: "",
+    medication: "",
   };
   const [body_part, setBody_part] = React.useState(initialValues.body_part);
   const [entry_name, setEntry_name] = React.useState(initialValues.entry_name);
   const [diagnosis, setDiagnosis] = React.useState(initialValues.diagnosis);
   const [user_id, setUser_id] = React.useState(initialValues.user_id);
+  const [medication, setMedication] = React.useState(initialValues.medication);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     const cleanValues = entryRecord
@@ -43,6 +45,7 @@ export default function EntryUpdateForm(props) {
     setEntry_name(cleanValues.entry_name);
     setDiagnosis(cleanValues.diagnosis);
     setUser_id(cleanValues.user_id);
+    setMedication(cleanValues.medication);
     setErrors({});
   };
   const [entryRecord, setEntryRecord] = React.useState(entryModelProp);
@@ -66,6 +69,7 @@ export default function EntryUpdateForm(props) {
     entry_name: [],
     diagnosis: [],
     user_id: [],
+    medication: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -97,6 +101,7 @@ export default function EntryUpdateForm(props) {
           entry_name: entry_name ?? null,
           diagnosis: diagnosis ?? null,
           user_id: user_id ?? null,
+          medication: medication ?? null,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -161,6 +166,7 @@ export default function EntryUpdateForm(props) {
               entry_name,
               diagnosis,
               user_id,
+              medication,
             };
             const result = onChange(modelFields);
             value = result?.body_part ?? value;
@@ -188,6 +194,7 @@ export default function EntryUpdateForm(props) {
               entry_name: value,
               diagnosis,
               user_id,
+              medication,
             };
             const result = onChange(modelFields);
             value = result?.entry_name ?? value;
@@ -215,6 +222,7 @@ export default function EntryUpdateForm(props) {
               entry_name,
               diagnosis: value,
               user_id,
+              medication,
             };
             const result = onChange(modelFields);
             value = result?.diagnosis ?? value;
@@ -242,6 +250,7 @@ export default function EntryUpdateForm(props) {
               entry_name,
               diagnosis,
               user_id: value,
+              medication,
             };
             const result = onChange(modelFields);
             value = result?.user_id ?? value;
@@ -255,6 +264,34 @@ export default function EntryUpdateForm(props) {
         errorMessage={errors.user_id?.errorMessage}
         hasError={errors.user_id?.hasError}
         {...getOverrideProps(overrides, "user_id")}
+      ></TextField>
+      <TextField
+        label="Medication"
+        isRequired={false}
+        isReadOnly={false}
+        value={medication}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              body_part,
+              entry_name,
+              diagnosis,
+              user_id,
+              medication: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.medication ?? value;
+          }
+          if (errors.medication?.hasError) {
+            runValidationTasks("medication", value);
+          }
+          setMedication(value);
+        }}
+        onBlur={() => runValidationTasks("medication", medication)}
+        errorMessage={errors.medication?.errorMessage}
+        hasError={errors.medication?.hasError}
+        {...getOverrideProps(overrides, "medication")}
       ></TextField>
       <Flex
         justifyContent="space-between"

@@ -27,12 +27,14 @@ export declare type EntryUpdateFormInputValues = {
     entry_name?: string;
     diagnosis?: string;
     user_id?: string;
+    medication?: string;
 };
 export declare type EntryUpdateFormValidationValues = {
     body_part?: ValidationFunction<string>;
     entry_name?: ValidationFunction<string>;
     diagnosis?: ValidationFunction<string>;
     user_id?: ValidationFunction<string>;
+    medication?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type EntryUpdateFormOverridesProps = {
@@ -41,6 +43,7 @@ export declare type EntryUpdateFormOverridesProps = {
     entry_name?: PrimitiveOverrideProps<TextFieldProps>;
     diagnosis?: PrimitiveOverrideProps<TextFieldProps>;
     user_id?: PrimitiveOverrideProps<TextFieldProps>;
+    medication?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type EntryUpdateFormProps = React.PropsWithChildren<{
     overrides?: EntryUpdateFormOverridesProps | undefined | null;
