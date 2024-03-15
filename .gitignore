@@ -46,3 +46,7 @@ amplifytools.xcconfig
 .secret-*
 **.sample
 #amplify-do-not-edit-end
+
+best_model.pt
+
+env/

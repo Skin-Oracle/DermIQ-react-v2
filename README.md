@@ -21,3 +21,6 @@ note: Backend is fully hosted on AWS US-WEST-1
 
 ### to run frontend
 `npm run dev`
+
+### to run parsa's server 
+`uvicorn main:app --reload`
