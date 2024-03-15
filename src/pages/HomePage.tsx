@@ -5,7 +5,6 @@ import '@aws-amplify/ui-react/styles.css';
 import './HomePage.css';
 import {Button, Container, Box, Typography, createTheme} from '@mui/material'
 import { DiagnosisTable } from '../components/DiagnosisTable';
-import { useUsersContext } from '../contexts/UsersProvider';
 import { useEffect, useState } from 'react';
 import { CreateDiagnosisModal } from '../components/modals/CreateDiagnosisModal';
 import { useEntries } from '../contexts/EntriesProvider';
@@ -21,6 +20,7 @@ import { cardio } from 'ldrs'
 const HomePage = ({ signOut, user }: WithAuthenticatorProps) => {
 
   // const {users, fetchOrCreateUser} = useUsersContext();
+  const OPENAI_API_KEY='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';
   const [isModalOpen, setIsModalOpen]  = useState<boolean>(false);
   const { entries, createNewEntry, fetchEntries} =useEntries();
   const [ bodyPart, setBodyPart] = useState<string>("");
@@ -68,7 +68,6 @@ const HomePage = ({ signOut, user }: WithAuthenticatorProps) => {
           'Content-Type': 'multipart/form-data' // Important header for file uploads
         }
       });
-      console.log(response)
       // Handle the response data as needed, e.g., store in state, display on UI
       return response.data.Diagnosis
     } catch (error) {
@@ -188,7 +187,7 @@ const HomePage = ({ signOut, user }: WithAuthenticatorProps) => {
     }
     await createNewReport(newReport);
     setIsFunctionRunning(false);
-    navigate(`reports/${entryID}`, { state: { diagnosis } });
+    navigate(`reports/${entryID}`, { state: { diagnosis: diagnosis, entryName: entryName, userID: user.userId } });
   }
 
   
@@ -233,7 +232,7 @@ const HomePage = ({ signOut, user }: WithAuthenticatorProps) => {
     </Box>
     
     <Container
-        sx={{ width: "100%", mt:"40px",pt:"30px",pb: "50px", mx: "auto", maxWidth:"1000px", backgroundColor:"white",px:"30px", border:"1px solid #e9e8ed"}}
+        sx={{ width: "100%", mt:"80px",pt:"30px",pb: "50px", mx: "auto", maxWidth:"1000px", backgroundColor:"white",px:"30px", border:"1px solid #e9e8ed"}}
         disableGutters
       >
         <Box
@@ -246,8 +245,20 @@ const HomePage = ({ signOut, user }: WithAuthenticatorProps) => {
           }}
         >
           <Typography sx={{fontFamily:"DM Sans", fontSize: "35px", color: "#404040", fontWeight: 800 }}>
-            Diagnoses Chart
+            Diagnoses
           </Typography>
+          <Box sx={{display:"flex", gap:"8px"}}>
+          <Button
+            variant="contained"
+            onClick={signOut}
+            sx={{fontFamily:"DM Sans", fontSize: "17px", fontWeight: 600, backgroundColor: "#6583BB",
+            color: "white",
+            "&:hover, &:focus": {
+              backgroundColor: "#5A75A8",
+            },  }}
+          >          
+            Sign out
+          </Button>
 
           <Button
             variant="contained"
@@ -260,6 +271,7 @@ const HomePage = ({ signOut, user }: WithAuthenticatorProps) => {
           >          
             New Diagnosis
           </Button>
+          </Box>
         </Box>
 
         <Box
@@ -269,7 +281,7 @@ const HomePage = ({ signOut, user }: WithAuthenticatorProps) => {
             borderRadius: 0,
           }}
         >
-          <DiagnosisTable handleOpenModal={handleOpenModal} />
+          <DiagnosisTable handleOpenModal={handleOpenModal} userID={user.userId} />
         </Box>
         <CreateDiagnosisModal
         open={isModalOpen}

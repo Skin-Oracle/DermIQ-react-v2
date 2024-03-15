@@ -4,7 +4,7 @@ import { generateClient } from "aws-amplify/api";
 const client = generateClient();
 import { useUsersContext } from './UsersProvider';
 import { listEntries } from '../graphql/queries';
-import { deleteEntry, createEntry } from '../graphql/mutations';
+import { deleteEntry, createEntry, updateEntry } from '../graphql/mutations';
 
 // Define the type for our entries context state
 interface EntriesContextState {
@@ -13,6 +13,7 @@ interface EntriesContextState {
   fetchEntries:(userID: string) =>Promise<void>;
   createNewEntry:(input: APITypes.CreateEntryInput) => Promise<void>;
   deleteExistingEntry:(input: APITypes.DeleteEntryInput) => Promise<void>;
+  updateExistingEntry:(input: APITypes.UpdateEntryInput) => Promise<void>;
 }
 
 // Create the context
@@ -38,7 +39,6 @@ export const EntriesProvider = (props: { children: React.ReactNode }) => {
           }
         }
       }));
-      console.log(fetchEntries)
       if (response.data.listEntries.items){
         setEntries(response.data.listEntries.items)
       }
@@ -48,6 +48,34 @@ export const EntriesProvider = (props: { children: React.ReactNode }) => {
       setIsEntriesLoading(false);
     }
   },[]);
+
+  const updateExistingEntry = useCallback(async(input: APITypes.UpdateEntryInput,) => {
+    try {
+      const response = await client.graphql({
+        query: updateEntry,
+        variables: {
+          input: {
+            id: input.id,
+            medication: input.medication,
+          },
+        },
+      });
+  
+      // Check if the mutation was successful
+      if (response.data?.updateEntry) {
+        const index = entries.findIndex(entry => entry.id === input.id);
+        if (index !== -1) {
+          entries[index] = response.data.updateEntry;
+        } 
+      } else {
+        console.error('Failed to update entry:', response.errors);
+      }
+    } catch (error) {
+      console.error('Error updating entry:', error);
+      throw error; // Rethrow the error to be handled by the caller, if necessary
+    }
+  },[entries]);
+
   const createNewEntry = useCallback(async(input:APITypes.CreateEntryInput) => {
     try {
       const response = await client.graphql({
@@ -92,10 +120,10 @@ export const EntriesProvider = (props: { children: React.ReactNode }) => {
 
   const value = useMemo(
     () => ({
-      entries, isEntriesLoading, fetchEntries, createNewEntry, deleteExistingEntry
+      entries, isEntriesLoading, fetchEntries, createNewEntry, deleteExistingEntry, updateExistingEntry,
     }),
     [
-      entries, isEntriesLoading, fetchEntries, createNewEntry, deleteExistingEntry
+      entries, isEntriesLoading, fetchEntries, createNewEntry, deleteExistingEntry, updateExistingEntry,
     ],
   );
 

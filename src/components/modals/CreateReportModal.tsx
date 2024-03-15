@@ -15,7 +15,7 @@ export const CreateReportModal = ({open, onClose, handleImageUpload, handleCreat
     cardio.register()
     const [userComments, setUserComments] = useState('');
     const [isPhotoUploaded, setIsPhotoUploaded] = useState(false);
-  const isConfirmDisabled = !userComments || !isPhotoUploaded; // Confirms is disabled if any of the fields is empty
+  const isConfirmDisabled = !isPhotoUploaded; // Confirms is disabled if any of the fields is empty
 
   const handleUserCommentsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const name = event.target.value;
@@ -74,11 +74,13 @@ export const CreateReportModal = ({open, onClose, handleImageUpload, handleCreat
                             }}
                         >
                             <Typography sx={{fontFamily:"DM Sans", fontSize: "25px", color: "#404040", fontWeight: 800 }}>Add Report Entry</Typography>
+                            <Box sx={{display:"flex", width:"100%",alignItems:"center", flexDirection:"row", justifyContent:"center"}}>
+                            <Typography>Please upload an image that has a US quarter placed next to the mark</Typography>
+                            </Box>
                             <PhotoUploadComponent
                                 handleImageUpload={handleImageUploadWrapper}
                              />
                             <TextField
-                            required
                             label="User comments"
                             value={userComments}
                             onChange={handleUserCommentsChange}

@@ -18,21 +18,22 @@ import { useEffect } from "react";
 
 interface Props {
   handleOpenModal: () => void;
+  userID: string;
 }
 
-export const DiagnosisTable = ({handleOpenModal}:Props) => {
+export const DiagnosisTable = ({handleOpenModal, userID}:Props) => {
   const { entries } = useEntries();
 
   const { fetchReports } = useReports(); // Assuming fetchReportForEntry is a function that handles fetching reports for a particular entryId
 
-  useEffect(() => {
-    // Here we assume that fetchReportForEntry function exists and is responsible for
-    // fetching the reports for a given entry ID and updating the context or state with the results.
-    entries.forEach((entry) => {
-      // Check to prevent over-fetching if the reports for the entry are already in the state/context.
-      fetchReports(entry.id);
-    });
-  }, [entries, fetchReports]);
+  // useEffect(() => {
+  //   // Here we assume that fetchReportForEntry function exists and is responsible for
+  //   // fetching the reports for a given entry ID and updating the context or state with the results.
+  //   entries.forEach((entry) => {
+  //     // Check to prevent over-fetching if the reports for the entry are already in the state/context.
+  //     fetchReports(entry.id);
+  //   });
+  // }, [entries, fetchReports]);
 
   const theme = createTheme({
     typography: {
@@ -86,7 +87,7 @@ export const DiagnosisTable = ({handleOpenModal}:Props) => {
           {entries.length !==0 ? (
             entries
             .map((entry) => {
-              const { id, body_part, entry_name, diagnosis, createdAt } = entry;
+              const { id, body_part, entry_name, diagnosis, createdAt, medication } = entry;
               return (
                 <DiagnosisTableRow
                   key={id}
@@ -95,6 +96,8 @@ export const DiagnosisTable = ({handleOpenModal}:Props) => {
                   diagnosis={diagnosis}
                   bodyPart={body_part}
                   createdAt={createdAt.split('T')[0]}
+                  medication={medication}
+                  userID={userID}
                 />
               );
             })):(

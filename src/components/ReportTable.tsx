@@ -20,6 +20,9 @@ import {
   export const ReportTable = ({entryID} : Props) => {
 
     const {reports} = useReports(); // Assuming fetchReportForEntry is a function that handles fetching reports for a particular entryId
+    const sortedReports = reports[entryID].sort((a, b) => 
+    new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+  );
     return (
       <TableContainer>
         <Table>
@@ -52,7 +55,7 @@ import {
             </TableRow>
           </TableHead>
           <TableBody>
-            {reports && reports[entryID] && reports[entryID].map((reportEntry) => {
+            {reports && reports[entryID] && sortedReports.map((reportEntry) => {
               const { id, imageuri, nlpresponse, createdAt, area } = reportEntry;
               return (
                 imageuri != null && nlpresponse != null && area != null && (

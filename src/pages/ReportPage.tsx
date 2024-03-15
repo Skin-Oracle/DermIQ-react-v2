@@ -1,36 +1,187 @@
 import { useReports } from '../contexts/ReportsProvider'
-import { Container, Box, Typography, Button, createTheme, ThemeProvider  } from '@mui/material'
+import { useEntries } from '../contexts/EntriesProvider';
+import { Container, Box, Typography, Button, createTheme, ThemeProvider, Menu, MenuItem  } from '@mui/material'
 import { ReportTable } from '../components/ReportTable'
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import axios from 'axios'
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { uploadData } from 'aws-amplify/storage';
 import { v4 as uuidv4 } from 'uuid';
+import { Chart, registerables } from 'chart.js';
+import 'chartjs-adapter-date-fns';
+Chart.register(...registerables);
 import * as APITypes from "../API";
 import { CreateReportModal } from '../components/modals/CreateReportModal';
 
 import Logo from '../components/dermlogo.png';
 import IconButton from '@mui/material/IconButton';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { MedicationModal } from '../components/modals/MedicationModal';
+import { GraphModal } from '../components/modals/GraphModal';
 
 
 
 const ReportPage = () => {
+
+  const OPENAI_API_KEY='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';
     const navigate = useNavigate();
 
     const location = useLocation();
-    const { diagnosis } = location.state || {};
-
-    const {reports, createNewReport} = useReports();
+    const { diagnosis, entryName, userMedication } = location.state || {};
+    const { updateExistingEntry, fetchEntries } = useEntries();
+    const {reports, createNewReport, fetchReports} = useReports();
     const { entryId } = useParams<"entryId">();
     const  [uploadedImage, setUploadedImage] = useState<File>()
-    const [userComments, setUserComments] = useState<string>("");
+    const [userComments, setUserComments] = useState<string>();
+    const [medication, setMedication] = useState<string>(userMedication || "");
     const [isFunctionRunning, setIsFunctionRunning] = useState<boolean>(false)
     const imageURLPath = "https://finaldermiqbucket182827-dev.s3.us-west-1.amazonaws.com/public/";
 
     const [isModalOpen, setIsModalOpen]  = useState<boolean>(false);
+    const [isMedicationModalOpen, setIsMedicationModalOpen]  = useState<boolean>(false);
+    const [isGraphModalOpen, setIsGraphModalOpen]  = useState<boolean>(false);
+
+    useEffect(() =>{
+      fetchReports(entryId)
+    }, [fetchReports, entryId])
+
+    // const chartRef = useRef(null);
+
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const menuOpen = Boolean(anchorEl);
+  
+    const handleMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+      setAnchorEl(event.currentTarget);
+    };
+  
+    const handleMenuClose = () => {
+      setAnchorEl(null);
+    };
+
+    // useEffect(() => {
+    //   if (isGraphModalOpen && chartRef.current && reports && entryId && reports[entryId]) {
+    //     const chartContext = chartRef.current.getContext('2d');
+    //     const data = {
+    //       datasets: [{
+    //         label: 'Area over time',
+    //         data: reports[entryId].map(report => ({
+    //           x: report.createdAt, // ISO8601 string is fine here
+    //           y: report.area,
+    //         })),
+    //         borderColor: '#007bff',
+    //         backgroundColor: 'rgba(0, 123, 255, 0.5)',
+    //       }],
+    //     };
+        
+    //     const options = {
+    //       scales: {
+    //         x: {
+    //           type: 'time',
+    //           time: {
+    //             // Specify the format if you're setting a different one for the tooltip
+    //             tooltipFormat: 'PPP', // For date-fns, PPP is the equivalent to something like 'Jan 1, 2020'
+    //           },
+    //           title: {
+    //             display: true,
+    //             text: 'Date'
+    //           },
+    //           ticks: {
+    //             // Reduce the number of ticks on the x-axis
+    //             maxTicksLimit: 10,
+    //           }
+    //         },
+    //         y: {
+    //           beginAtZero: true,
+    //           title: {
+    //             display: true,
+    //             text: 'Area (mm^2)',
+    //           }
+    //         }
+    //       },
+    //     };
+  
+    //     const chart = new Chart(chartContext, {
+    //       type: 'line',
+    //       data: data,
+    //       options: options,
+    //     });
+  
+    //     return () => chart.destroy();
+    //   }
+    // }, [isGraphModalOpen, entryId, reports]);
+
+    // const chartContainerRef = useRef<HTMLCanvasElement>(null);
+  
+    // useEffect(() => {
+    //   let chartInstance: Chart | null = null;
+  
+    //   if (open && chartContainerRef.current && reports && reports[entryId]) {
+    //     const chartContext = chartContainerRef.current.getContext('2d');
+    //     if (chartContext) {
+    //       const chartData = {
+    //         datasets: [
+    //           {
+    //             label: 'Area over time',
+    //             data: reports[entryId].map(report => ({
+    //               x: new Date(report.createdAt), // Make sure to convert to Date objects if necessary
+    //               y: report.area,
+    //             })),
+    //             borderColor: '#007bff',
+    //             backgroundColor: 'rgba(0, 123, 255, 0.5)',
+    //           },
+    //         ],
+    //       };
+  
+    //       const options = {
+    //         responsive: true,
+    //         scales: {
+    //           x: {
+    //             type: 'time',
+    //             time: {
+    //               tooltipFormat: 'PPP',
+    //             },
+    //             title: {
+    //               display: true,
+    //               text: 'Date',
+    //             }
+    //           },
+    //           y: {
+    //             beginAtZero: true,
+    //             title: {
+    //               display: true,
+    //               text: 'Area (mm^2)',
+    //             }
+    //           }
+    //         }
+    //       };
+  
+    //       chartInstance = new Chart(chartContext, {
+    //         type: 'line',
+    //         data: chartData,
+    //         options: options,
+    //       });
+    //     }
+    //   }
+  
+    //   return () => {
+    //     if (chartInstance) {
+    //       chartInstance.destroy();
+    //     }
+    //   };
+    // }, [open, reports, entryId]);
+  
+
+    const handleSetMedication = (medicationStr: string) =>{
+      setMedication(medicationStr)
+    }
+
+  const editMedication = async() => {
+    if (entryId){
+      await updateExistingEntry({id: entryId, medication: medication});
+    }
+  }
     
   const downloadReport = async () => {
     const input = document.body; // Adjust this to target the specific element you want to convert
@@ -75,8 +226,22 @@ const ReportPage = () => {
     setIsModalOpen(false);
   };
 
+  const handleOpenMedicationModal = () => {
+    setIsMedicationModalOpen(true);
+  };
+
+  const handleCloseMedicationModal = () => {
+    setIsMedicationModalOpen(false);
+  };
+
   const handleImageUpload = (selectedImage: File) => {
     setUploadedImage(selectedImage);
+  }
+  const handleOpenGraphModal = () => {
+    setIsGraphModalOpen(true);
+  }
+  const handleCloseGraphModal = () => {
+    setIsGraphModalOpen(false);
   }
 
   const callGetSizeEndpoint = async () => {
@@ -107,7 +272,7 @@ const ReportPage = () => {
   };
 
 
-const generateSummaryMessages = async (entryId:string, newDisease:string, newSize:number, newUserComments:string) => {
+const generateSummaryMessages = async (entryId:string, newDisease:string, newSize:number, newUserComments:string, userMedication?:string) => {
   const messages = [
     {
       role: "system",
@@ -140,12 +305,25 @@ const generateSummaryMessages = async (entryId:string, newDisease:string, newSiz
   }
 
   // Add the prompt for the AI to summarize the changes
-  messages.push(
-    {
-      role: "user",
-      content: `The patient's current condition of ${newDisease} has a size of ${newSize} mm^2. Based on the previous report information provided and current update, can you summarize the progression of the condition and the user's sentiments about their updated condition so they can share with their physician?`
-    }
-  );
+  if(!medication){
+    console.log("no meds")
+    messages.push(
+      {
+        role: "user",
+        content: `The patient's current condition of ${newDisease} has a size of ${newSize} mm^2. Based on the previous report information provided and current update, can you summarize the progression of the condition and the user's sentiments about their updated condition so they can share with their physician?`
+      }
+    );
+  }
+  else{
+    console.log("meds")
+    messages.push(
+      {
+        role: "user",
+        content: `The patient's current condition of ${newDisease} has a size of ${newSize} mm^2. The patient's medication for this condition is ${medication}. Based on the previous report information provided and current update, can you summarize the progression of the condition and the user's sentiments about their updated condition so they can share with their physician?`
+      }
+    );
+  }
+  
 
     const response = await axios.post(
         `https://api.openai.com/v1/chat/completions`,
@@ -183,7 +361,7 @@ const generateSummaryMessages = async (entryId:string, newDisease:string, newSiz
     const formattedSize = parseFloat(size.toFixed(2));
     let newNLPResponse = ""
     if(entryId){
-      newNLPResponse = await generateSummaryMessages(entryId, diagnosis, formattedSize, userComments);
+      newNLPResponse = await generateSummaryMessages(entryId, diagnosis, formattedSize, userComments, userMedication);
     }
 
     await uploadImageToS3();
@@ -224,15 +402,26 @@ const generateSummaryMessages = async (entryId:string, newDisease:string, newSiz
         >
           <img src={Logo} alt = "Derm IQ Logo" width="200"/>
         </Box>
-            <Container
-              sx={{ width: "100%", mt:"40px",pt:"30px",pb: "0px", mx: "auto", maxWidth:"1200px"}}
-              disableGutters>
-                <IconButton
-                  onClick={handleGoHome}
-                >
-                  <ArrowBackIcon sx={{ fontSize: '40px', color:"#404040",}} />
-                </IconButton>
-            </Container>
+        <Container
+          sx={{ 
+              width: "100%", mt:"40px", pt:"50px", pb: "0px", 
+              mx: "auto", maxWidth:"1200px", display:"flex", 
+              flexDirection: "row", 
+              justifyContent: "space-between"
+          }}
+          disableGutters
+        >
+          <IconButton
+            onClick={handleGoHome}
+          >
+            <ArrowBackIcon sx={{ fontSize: '40px', color:"#404040"}} />
+          </IconButton>
+
+          <Typography sx={{fontFamily:"DM Sans", fontSize: "35px", color: "#404040", fontWeight: 800, textAlign: "center" }}>
+            {`${entryName} Report`}
+          </Typography> 
+          <div style={{ width:"56px" }}></div>
+        </Container>
             <Container
         sx={{ width: "100%", mt:"40px",pt:"30px",pb: "50px", mx: "auto", maxWidth:"1200px", backgroundColor:"white",px:"50px", border:"1px solid #e9e8ed"}}
         disableGutters
@@ -250,10 +439,7 @@ const generateSummaryMessages = async (entryId:string, newDisease:string, newSiz
             flex={"display"}
             flexDirection={"column"}
             sx={{}}>
-            <Typography sx={{fontFamily:"DM Sans", fontSize: "35px", color: "#404040", fontWeight: 800 }}>
-              {`Report`}
-            </Typography> 
-            <Typography sx={{fontFamily:"DM Sans", fontSize: "px", color: "#404040", fontWeight: 400 }}>
+            <Typography sx={{fontFamily:"DM Sans", fontSize: "25px", color: "#404040", fontWeight: 500 }}>
               {`Diagnosis: ${diagnosis}`}
             </Typography> 
           </Box>
@@ -262,27 +448,44 @@ const generateSummaryMessages = async (entryId:string, newDisease:string, newSiz
             gap: "10px",
           }}>
             <Button
-            variant="contained"
-            onClick={() => downloadReport()}
-            sx={{fontFamily:"DM Sans", fontSize: "17px", fontWeight: 600, backgroundColor: "#6583BB",
-            color: "white",
-            "&:hover, &:focus": {
-              backgroundColor: "#5A75A8",
-            },  }}
-            >
-              Download
-            </Button>
-            <Button
-              variant="contained"
-              onClick={handleOpenModal}
-              sx={{fontFamily:"DM Sans", fontSize: "17px", fontWeight: 600, backgroundColor: "#6583BB",
-              color: "white",
-              "&:hover, &:focus": {
-                backgroundColor: "#5A75A8",
-              },  }}
-            >
-              New Report Entry
-            </Button>
+        aria-controls="more-menu"
+        aria-haspopup="true"
+        aria-expanded={menuOpen ? 'true' : undefined}
+        onClick={handleMenuClick}
+        variant="contained"
+        sx={{fontFamily:"DM Sans", fontSize: "17px", fontWeight: 600, backgroundColor: "#6583BB",
+        color: "white",
+        "&:hover, &:focus": {
+          backgroundColor: "#5A75A8",
+        }}}
+      >
+        More
+      </Button>
+      <Menu
+        id="more-menu"
+        anchorEl={anchorEl}
+        open={menuOpen}
+        onClose={handleMenuClose}
+        MenuListProps={{
+          'aria-labelledby': 'more-button',
+        }}
+      >
+        {/* <MenuItem onClick={() => { handleOpenGraphModal(); handleMenuClose(); }}>View Graph</MenuItem> */}
+        <MenuItem onClick={() => { handleOpenMedicationModal(); handleMenuClose(); }}>Update Medication</MenuItem>
+        <MenuItem onClick={() => { downloadReport(); handleMenuClose(); }}>Download PDF</MenuItem>
+      </Menu>
+      
+      <Button
+        variant="contained"
+        onClick={handleOpenModal}
+        sx={{fontFamily:"DM Sans", fontSize: "17px", fontWeight: 600, backgroundColor: "#6583BB",
+        color: "white",
+        "&:hover, &:focus": {
+          backgroundColor: "#5A75A8",
+        }}}
+      >
+        New Report Entry
+      </Button>
           </Box>
         </Box>
 
@@ -293,9 +496,12 @@ const generateSummaryMessages = async (entryId:string, newDisease:string, newSiz
             borderRadius: 0,
           }}
         >
-          {entryId && (
+          {entryId && reports && reports[entryId] && (
+            <>
               <ReportTable entryID={entryId}/>
+              </>
           )}
+          
         </Box>
         <CreateReportModal
           open={isModalOpen}
@@ -305,6 +511,15 @@ const generateSummaryMessages = async (entryId:string, newDisease:string, newSiz
           handleSetUserComments={handleSetUserComments}
           isFunctionRunning={isFunctionRunning}
         />
+        <MedicationModal 
+          open={isMedicationModalOpen}
+          onClose={handleCloseMedicationModal}
+          handleSetMedication={handleSetMedication}
+          editMedication={editMedication}
+        />
+
+        {/* <GraphModal open={isGraphModalOpen} onClose={handleCloseGraphModal} entryId={entryId} /> */}
+        
       </Container>
       </ThemeProvider>
     )
