@@ -18,6 +18,7 @@ import Logo from '../components/dermlogo.png';
 import { cardio } from 'ldrs'
 
 
+
 const HomePage = ({ signOut, user }: WithAuthenticatorProps) => {
 
   // const {users, fetchOrCreateUser} = useUsersContext();
@@ -278,16 +279,16 @@ const HomePage = ({ signOut, user }: WithAuthenticatorProps) => {
           fontSize: '17px',
           fontWeight: 600,
           backgroundColor: 'white',
-          color: 'black',
-          border: '1px solid black', // Add a black border
+          color: '#5A75A8',
+          border: '1px solid #5A75A8', // Add a black border
           '&:hover, &:focus': {
-            backgroundColor: 'black',
+            backgroundColor: '#5A75A8',
             color:'white',
-            border: '1px solid black', // Add a black border
+            border: '1px solid #5A75A8', // Add a black border
           },
         }}
       >
-        Options
+        More
       </Button>
       <Menu 
         id="simple-menu"

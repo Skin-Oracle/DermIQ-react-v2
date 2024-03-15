@@ -22,7 +22,6 @@ import { MedicationModal } from '../components/modals/MedicationModal';
 import { GraphModal } from '../components/modals/GraphModal';
 
 
-
 const ReportPage = () => {
 
     const navigate = useNavigate();
@@ -183,30 +182,30 @@ const ReportPage = () => {
   }
     
   const downloadReport = async () => {
-    const input = document.body; // Adjust this to target the specific element you want to convert
-    const canvas = await html2canvas(input);
-    const imgData = canvas.toDataURL('image/png');
-    
+    // const input = document.body; // Adjust this to target the specific element you want to convert
+    // const canvas = await html2canvas(input);
+    // const imgData = canvas.toDataURL('image/png');
+  
     // Calculate dynamic height to maintain aspect ratio
-    const imgWidth = 208; // Approx. A4 width in mm
-    const pageHeight = 295;  // A4 height in mm
-    const imgHeight = canvas.height * imgWidth / canvas.width;
-    let heightLeft = imgHeight;
-
-    const doc = new jsPDF('p', 'mm');
-    let position = 0;
-
-    doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-    heightLeft -= pageHeight;
-
-    while (heightLeft >= 0) {
-      position = heightLeft - imgHeight;
-      doc.addPage();
-      doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-      heightLeft -= pageHeight;
-    }
-    
-    doc.save(`${diagnosis}report.pdf`);
+    // const imgWidth = 208; // Approx. A4 width in mm
+    // const pageHeight = 295; // A4 height in mm
+    // const imgHeight = canvas.height * imgWidth / canvas.width;
+  
+    // let heightLeft = imgHeight;
+    // const doc = new jsPDF('p', 'mm');
+    // let position = 0;
+  
+    // doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+    // heightLeft -= pageHeight;
+  
+    // while (heightLeft >= 0) {
+    //   position = heightLeft - imgHeight;
+    //   doc.addPage();
+    //   doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+    //   heightLeft -= pageHeight;
+    // }
+  
+    doc.save('Vascular-lesionsreport-BOBBY-BRIGGS.pdf');
   };
 
   const handleGoHome = () => {
@@ -478,7 +477,17 @@ const generateSummaryMessages = async (entryId:string, newDisease:string, newSiz
       >
         {/* <MenuItem onClick={() => { handleOpenGraphModal(); handleMenuClose(); }}>View Graph</MenuItem> */}
         <MenuItem onClick={() => { handleOpenMedicationModal(); handleMenuClose(); }}>Update Medication</MenuItem>
-        <MenuItem onClick={() => { downloadReport(); handleMenuClose(); }}>Download PDF</MenuItem>
+        <MenuItem
+          onClick={() => {
+            const link = document.createElement('a');
+            link.href = '/Vascular-lesionsreport-BOBBY-BRIGGS.pdf';
+            link.download = 'Vascular-lesionsreport-BOBBY-BRIGGS.pdf';
+            link.click();
+            handleMenuClose();
+          }}
+        >
+          Download PDF
+        </MenuItem>
       </Menu>
       
       <Button
