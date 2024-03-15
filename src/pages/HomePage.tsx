@@ -20,7 +20,6 @@ import { cardio } from 'ldrs'
 const HomePage = ({ signOut, user }: WithAuthenticatorProps) => {
 
   // const {users, fetchOrCreateUser} = useUsersContext();
-  const OPENAI_API_KEY='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';
   const [isModalOpen, setIsModalOpen]  = useState<boolean>(false);
   const { entries, createNewEntry, fetchEntries} =useEntries();
   const [ bodyPart, setBodyPart] = useState<string>("");

@@ -25,7 +25,6 @@ import { GraphModal } from '../components/modals/GraphModal';
 
 const ReportPage = () => {
 
-  const OPENAI_API_KEY='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';
     const navigate = useNavigate();
 
     const location = useLocation();
